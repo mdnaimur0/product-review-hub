@@ -43,6 +43,24 @@ export type HttpValidationError = {
 };
 
 /**
+ * ProductCreate
+ */
+export type ProductCreate = {
+  /**
+   * Title
+   */
+  title: string;
+  /**
+   * Description
+   */
+  description?: string;
+  /**
+   * Image Url
+   */
+  image_url?: string | null;
+};
+
+/**
  * ProductDetail
  */
 export type ProductDetail = {
@@ -100,6 +118,32 @@ export type ProductListItem = {
    * Review Count
    */
   review_count: number;
+};
+
+/**
+ * ProductRead
+ */
+export type ProductRead = {
+  /**
+   * Title
+   */
+  title: string;
+  /**
+   * Description
+   */
+  description?: string;
+  /**
+   * Image Url
+   */
+  image_url?: string | null;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Created At
+   */
+  created_at: string;
 };
 
 /**
@@ -192,6 +236,10 @@ export type UserCreate = {
    * Is Verified
    */
   is_verified?: boolean | null;
+  /**
+   * Name
+   */
+  name?: string;
 };
 
 /**
@@ -218,6 +266,10 @@ export type UserRead = {
    * Is Verified
    */
   is_verified?: boolean;
+  /**
+   * Name
+   */
+  name: string;
 };
 
 /**
@@ -244,6 +296,10 @@ export type UserUpdate = {
    * Is Verified
    */
   is_verified?: boolean | null;
+  /**
+   * Name
+   */
+  name?: string | null;
 };
 
 /**
@@ -660,6 +716,25 @@ export type ReviewsCreateReviewResponses = {
 export type ReviewsCreateReviewResponse =
   ReviewsCreateReviewResponses[keyof ReviewsCreateReviewResponses];
 
+export type ReviewsGetMyReviewsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/reviews/me";
+};
+
+export type ReviewsGetMyReviewsResponses = {
+  /**
+   * Response Reviews-Get My Reviews
+   *
+   * Successful Response
+   */
+  200: Array<ReviewRead>;
+};
+
+export type ReviewsGetMyReviewsResponse =
+  ReviewsGetMyReviewsResponses[keyof ReviewsGetMyReviewsResponses];
+
 export type ReviewsDeleteReviewData = {
   body?: never;
   path: {
@@ -723,3 +798,94 @@ export type ReviewsUpdateReviewResponses = {
 
 export type ReviewsUpdateReviewResponse =
   ReviewsUpdateReviewResponses[keyof ReviewsUpdateReviewResponses];
+
+export type AdminAdminCreateProductData = {
+  body: ProductCreate;
+  path?: never;
+  query?: never;
+  url: "/api/admin/products";
+};
+
+export type AdminAdminCreateProductErrors = {
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type AdminAdminCreateProductError =
+  AdminAdminCreateProductErrors[keyof AdminAdminCreateProductErrors];
+
+export type AdminAdminCreateProductResponses = {
+  /**
+   * Successful Response
+   */
+  201: ProductRead;
+};
+
+export type AdminAdminCreateProductResponse =
+  AdminAdminCreateProductResponses[keyof AdminAdminCreateProductResponses];
+
+export type AdminAdminDeleteProductData = {
+  body?: never;
+  path: {
+    /**
+     * Product Id
+     */
+    product_id: number;
+  };
+  query?: never;
+  url: "/api/admin/products/{product_id}";
+};
+
+export type AdminAdminDeleteProductErrors = {
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type AdminAdminDeleteProductError =
+  AdminAdminDeleteProductErrors[keyof AdminAdminDeleteProductErrors];
+
+export type AdminAdminDeleteProductResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type AdminAdminDeleteProductResponse =
+  AdminAdminDeleteProductResponses[keyof AdminAdminDeleteProductResponses];
+
+export type AdminAdminDeleteReviewData = {
+  body?: never;
+  path: {
+    /**
+     * Review Id
+     */
+    review_id: number;
+  };
+  query?: never;
+  url: "/api/admin/reviews/{review_id}";
+};
+
+export type AdminAdminDeleteReviewErrors = {
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type AdminAdminDeleteReviewError =
+  AdminAdminDeleteReviewErrors[keyof AdminAdminDeleteReviewErrors];
+
+export type AdminAdminDeleteReviewResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type AdminAdminDeleteReviewResponse =
+  AdminAdminDeleteReviewResponses[keyof AdminAdminDeleteReviewResponses];

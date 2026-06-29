@@ -10,6 +10,15 @@ import {
 } from "./client";
 import { client } from "./client.gen";
 import type {
+  AdminAdminCreateProductData,
+  AdminAdminCreateProductErrors,
+  AdminAdminCreateProductResponses,
+  AdminAdminDeleteProductData,
+  AdminAdminDeleteProductErrors,
+  AdminAdminDeleteProductResponses,
+  AdminAdminDeleteReviewData,
+  AdminAdminDeleteReviewErrors,
+  AdminAdminDeleteReviewResponses,
   AuthAuthJwtLoginData,
   AuthAuthJwtLoginErrors,
   AuthAuthJwtLoginResponses,
@@ -30,6 +39,8 @@ import type {
   ReviewsDeleteReviewData,
   ReviewsDeleteReviewErrors,
   ReviewsDeleteReviewResponses,
+  ReviewsGetMyReviewsData,
+  ReviewsGetMyReviewsResponses,
   ReviewsUpdateReviewData,
   ReviewsUpdateReviewErrors,
   ReviewsUpdateReviewResponses,
@@ -294,6 +305,22 @@ export const reviewsCreateReview = <ThrowOnError extends boolean = false>(
   });
 
 /**
+ * Get My Reviews
+ */
+export const reviewsGetMyReviews = <ThrowOnError extends boolean = false>(
+  options?: Options<ReviewsGetMyReviewsData, ThrowOnError>,
+): RequestResult<ReviewsGetMyReviewsResponses, unknown, ThrowOnError> =>
+  (options?.client ?? client).get<
+    ReviewsGetMyReviewsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/api/reviews/me",
+    ...options,
+  });
+
+/**
  * Delete Review
  */
 export const reviewsDeleteReview = <ThrowOnError extends boolean = false>(
@@ -335,4 +362,68 @@ export const reviewsUpdateReview = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+
+/**
+ * Admin Create Product
+ */
+export const adminAdminCreateProduct = <ThrowOnError extends boolean = false>(
+  options: Options<AdminAdminCreateProductData, ThrowOnError>,
+): RequestResult<
+  AdminAdminCreateProductResponses,
+  AdminAdminCreateProductErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).post<
+    AdminAdminCreateProductResponses,
+    AdminAdminCreateProductErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/api/admin/products",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * Admin Delete Product
+ */
+export const adminAdminDeleteProduct = <ThrowOnError extends boolean = false>(
+  options: Options<AdminAdminDeleteProductData, ThrowOnError>,
+): RequestResult<
+  AdminAdminDeleteProductResponses,
+  AdminAdminDeleteProductErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).delete<
+    AdminAdminDeleteProductResponses,
+    AdminAdminDeleteProductErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/api/admin/products/{product_id}",
+    ...options,
+  });
+
+/**
+ * Admin Delete Review
+ */
+export const adminAdminDeleteReview = <ThrowOnError extends boolean = false>(
+  options: Options<AdminAdminDeleteReviewData, ThrowOnError>,
+): RequestResult<
+  AdminAdminDeleteReviewResponses,
+  AdminAdminDeleteReviewErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).delete<
+    AdminAdminDeleteReviewResponses,
+    AdminAdminDeleteReviewErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/api/admin/reviews/{review_id}",
+    ...options,
   });
