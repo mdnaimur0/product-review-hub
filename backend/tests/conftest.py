@@ -52,7 +52,7 @@ async def register_user(
     name: str = TEST_NAME,
 ) -> dict:
     resp = await client.post(
-        "/auth/register",
+        "/api/auth/register",
         json={"email": email, "password": password, "name": name},
     )
     assert resp.status_code == 201
@@ -61,7 +61,7 @@ async def register_user(
 
 async def login_user(client: AsyncClient, email: str = TEST_EMAIL, password: str = TEST_PASSWORD) -> str:
     resp = await client.post(
-        "/auth/jwt/login",
+        "/api/auth/jwt/login",
         data={"username": email, "password": password},
     )
     return resp.json()["access_token"]

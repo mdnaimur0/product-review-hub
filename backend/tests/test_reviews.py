@@ -11,7 +11,7 @@ async def test_create_review(client: AsyncClient, db_session):
     token = await login_user(client)
 
     resp = await client.post(
-        "/api/reviews",
+        "/api/reviews/",
         json={"product_id": product.id, "rating": 5, "comment": "Excellent!"},
         headers=await auth_header(token),
     )
@@ -28,7 +28,7 @@ async def test_create_review_invalid_rating(client: AsyncClient, db_session):
     token = await login_user(client)
 
     resp = await client.post(
-        "/api/reviews",
+        "/api/reviews/",
         json={"product_id": product.id, "rating": 6},
         headers=await auth_header(token),
     )
@@ -41,7 +41,7 @@ async def test_create_review_product_not_found(client: AsyncClient, db_session):
     token = await login_user(client)
 
     resp = await client.post(
-        "/api/reviews",
+        "/api/reviews/",
         json={"product_id": 9999, "rating": 5},
         headers=await auth_header(token),
     )
@@ -56,7 +56,7 @@ async def test_create_review_duplicate(client: AsyncClient, db_session):
     token = await login_user(client)
 
     resp = await client.post(
-        "/api/reviews",
+        "/api/reviews/",
         json={"product_id": product.id, "rating": 4},
         headers=await auth_header(token),
     )

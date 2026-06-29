@@ -6,7 +6,7 @@ from .conftest import create_product, create_review, register_user, login_user, 
 
 @pytest.mark.asyncio
 async def test_list_products_empty(client: AsyncClient):
-    resp = await client.get("/api/products")
+    resp = await client.get("/api/products/")
     assert resp.status_code == 200
     assert resp.json() == []
 
@@ -18,7 +18,7 @@ async def test_list_products_with_reviews(client: AsyncClient, db_session):
     await create_review(db_session, user_data["id"], product.id, rating=4)
     await create_review(db_session, user_data["id"], product.id, rating=2)
 
-    resp = await client.get("/api/products")
+    resp = await client.get("/api/products/")
     assert resp.status_code == 200
     data = resp.json()
     assert len(data) == 1

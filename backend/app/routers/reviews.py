@@ -29,6 +29,7 @@ async def create_review(
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=400, detail="Already reviewed this product")
 
+    user_name = user.name
     review = Review(
         product_id=data.product_id,
         user_id=user.id,
@@ -42,7 +43,7 @@ async def create_review(
         id=review.id,
         product_id=review.product_id,
         user_id=review.user_id,
-        user_name=user.name,
+        user_name=user_name,
         rating=review.rating,
         comment=review.comment,
         created_at=review.created_at,
@@ -54,6 +55,7 @@ async def get_my_reviews(
     user: User = Depends(get_current_active_user),
     db: AsyncSession = Depends(get_db),
 ):
+    user_name = user.name
     stmt = (
         select(Review)
         .options(selectinload(Review.product))
@@ -66,7 +68,7 @@ async def get_my_reviews(
             id=r.id,
             product_id=r.product_id,
             user_id=r.user_id,
-            user_name=user.name,
+            user_name=user_name,
             rating=r.rating,
             comment=r.comment,
             created_at=r.created_at,
@@ -94,6 +96,7 @@ async def update_review(
     db: AsyncSession = Depends(get_db),
 ):
     review = await _get_owned_review(review_id, user, db)
+    user_name = user.name
     if data.rating is not None:
         review.rating = data.rating
     if data.comment is not None:
@@ -104,7 +107,7 @@ async def update_review(
         id=review.id,
         product_id=review.product_id,
         user_id=review.user_id,
-        user_name=user.name,
+        user_name=user_name,
         rating=review.rating,
         comment=review.comment,
         created_at=review.created_at,
