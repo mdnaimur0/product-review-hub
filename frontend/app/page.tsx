@@ -9,6 +9,14 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Home() {
@@ -35,7 +43,7 @@ export default function Home() {
   };
 
   const handleRatingChange = (value: string) => {
-    setMinRating(value);
+    setMinRating(value === "all" ? "" : value);
     setPage(1);
   };
 
@@ -65,17 +73,18 @@ export default function Home() {
                 className="pl-9"
               />
             </div>
-            <select
-              value={minRating}
-              onChange={(e) => handleRatingChange(e.target.value)}
-              className="h-10 rounded-md border border-input bg-background px-3 text-sm text-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              <option value="">All ratings</option>
-              <option value="4">4+ stars</option>
-              <option value="3">3+ stars</option>
-              <option value="2">2+ stars</option>
-              <option value="1">1+ stars</option>
-            </select>
+            <Select value={minRating} onValueChange={handleRatingChange}>
+              <SelectTrigger className="w-35">
+                <SelectValue placeholder="All ratings" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All ratings</SelectItem>
+                <SelectItem value="4">4+ stars</SelectItem>
+                <SelectItem value="3">3+ stars</SelectItem>
+                <SelectItem value="2">2+ stars</SelectItem>
+                <SelectItem value="1">1+ stars</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {error && <ErrorAlert message={error} onRetry={refetch} />}
@@ -104,27 +113,27 @@ export default function Home() {
               <ProductGrid products={products} />
               {pagination.total_pages > 1 && (
                 <div className="mt-8 flex items-center justify-center gap-4">
-                  <button
+                  <Button
+                    variant="outline"
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
                   >
                     <ChevronLeft className="size-4" />
                     Previous
-                  </button>
+                  </Button>
                   <span className="text-sm text-muted-foreground">
                     Page {pagination.page} of {pagination.total_pages}
                   </span>
-                  <button
+                  <Button
+                    variant="outline"
                     onClick={() =>
                       setPage((p) => Math.min(pagination.total_pages, p + 1))
                     }
                     disabled={page === pagination.total_pages}
-                    className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
                   >
                     Next
                     <ChevronRight className="size-4" />
-                  </button>
+                  </Button>
                 </div>
               )}
             </>
