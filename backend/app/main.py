@@ -8,7 +8,7 @@ from .users import auth_backend, fastapi_users, AUTH_URL_PATH
 from .utils import generate_unique_route_id
 
 app = FastAPI(
-    title="Product Review Hub API",
+    title="Review Hub API",
     version="1.0.0",
     generate_unique_id_function=generate_unique_route_id,
 )
