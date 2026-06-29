@@ -148,3 +148,39 @@ async def test_admin_delete_review_unauthorized(client: AsyncClient, db_session)
         headers=await auth_header(token),
     )
     assert resp.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_admin_list_reviews(client: AsyncClient, db_session):
+    user = await register_user(client, email="user@test.com")
+    product = await create_product(db_session, title="Widget")
+    await create_review(db_session, user["id"], product.id, rating=4, comment="Nice")
+
+    await register_admin(client, db_session, email="admin@test.com")
+    token = await login_user(client, email="admin@test.com", password="Admin123!")
+
+    resp = await client.get(
+        "/api/admin/reviews",
+        headers=await auth_header(token),
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert len(data) == 1
+    r = data[0]
+    assert r["product_title"] == "Widget"
+    assert r["rating"] == 4
+    assert r["comment"] == "Nice"
+    assert "user_name" in r
+    assert "product_id" in r
+
+
+@pytest.mark.asyncio
+async def test_admin_list_reviews_unauthorized(client: AsyncClient, db_session):
+    await register_user(client)
+    token = await login_user(client)
+
+    resp = await client.get(
+        "/api/admin/reviews",
+        headers=await auth_header(token),
+    )
+    assert resp.status_code == 403

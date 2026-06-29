@@ -68,3 +68,13 @@ class ReviewRead(ReviewBase):
 
 class ProductDetail(ProductRead):
     reviews: list[ReviewRead]
+
+
+class AdminReviewRead(ReviewBase):
+    id: int
+    product_id: int
+    product_title: str
+    user_id: uuid.UUID
+    user_name: str
+    created_at: datetime
+    model_config = ConfigDict(from_attributes=True)

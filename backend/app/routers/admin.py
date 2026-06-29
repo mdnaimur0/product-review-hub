@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from ..database import get_db
 from ..dependencies import require_admin
 from ..models import Product, Review, User
-from ..schemas import ProductCreate, ProductRead
+from ..schemas import AdminReviewRead, ProductCreate, ProductRead
 
 router = APIRouter()
 
@@ -17,6 +18,32 @@ async def admin_list_products(
 ):
     result = await db.execute(select(Product).order_by(Product.created_at.desc()))
     return result.scalars().all()
+
+
+@router.get("/reviews", response_model=list[AdminReviewRead])
+async def admin_list_reviews(
+    _admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    stmt = (
+        select(Review)
+        .options(selectinload(Review.product), selectinload(Review.user))
+        .order_by(Review.created_at.desc())
+    )
+    reviews = (await db.execute(stmt)).scalars().all()
+    return [
+        AdminReviewRead(
+            id=r.id,
+            product_id=r.product_id,
+            product_title=r.product.title,
+            user_id=r.user_id,
+            user_name=r.user.name,
+            rating=r.rating,
+            comment=r.comment,
+            created_at=r.created_at,
+        )
+        for r in reviews
+    ]
 
 
 @router.post("/products", response_model=ProductRead, status_code=201)
