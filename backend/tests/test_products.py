@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
-from .conftest import create_product, create_review, register_user, login_user, TEST_EMAIL
+from .conftest import create_product, create_review, register_user, login_user, TEST_NAME
 
 
 @pytest.mark.asyncio
@@ -39,7 +39,7 @@ async def test_get_product_detail(client: AsyncClient, db_session):
     assert data["title"] == product.title
     assert len(data["reviews"]) == 1
     assert data["reviews"][0]["rating"] == 5
-    assert data["reviews"][0]["user_name"] == TEST_EMAIL
+    assert data["reviews"][0]["user_name"] == TEST_NAME
 
 
 @pytest.mark.asyncio

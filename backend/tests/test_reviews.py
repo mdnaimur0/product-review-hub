@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
-from .conftest import create_product, create_review, register_user, login_user, auth_header
+from .conftest import create_product, create_review, register_user, login_user, auth_header, TEST_NAME
 
 
 @pytest.mark.asyncio
@@ -127,3 +127,41 @@ async def test_delete_review_unauthorized(client: AsyncClient, db_session):
         headers=await auth_header(token),
     )
     assert resp.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_get_my_reviews(client: AsyncClient, db_session):
+    user_data = await register_user(client)
+    product = await create_product(db_session)
+    await create_review(db_session, user_data["id"], product.id, rating=4, comment="Good")
+    await create_review(db_session, user_data["id"], product.id, rating=5, comment="Great")
+    token = await login_user(client)
+
+    resp = await client.get(
+        "/api/reviews/me",
+        headers=await auth_header(token),
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert len(data) == 2
+    assert data[0]["user_name"] == TEST_NAME
+    assert data[0]["product_id"] == product.id
+
+
+@pytest.mark.asyncio
+async def test_get_my_reviews_empty(client: AsyncClient, db_session):
+    await register_user(client)
+    token = await login_user(client)
+
+    resp = await client.get(
+        "/api/reviews/me",
+        headers=await auth_header(token),
+    )
+    assert resp.status_code == 200
+    assert resp.json() == []
+
+
+@pytest.mark.asyncio
+async def test_get_my_reviews_unauthorized(client: AsyncClient):
+    resp = await client.get("/api/reviews/me")
+    assert resp.status_code == 401
