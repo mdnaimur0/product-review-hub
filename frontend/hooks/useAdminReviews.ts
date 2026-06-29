@@ -3,51 +3,21 @@
 import { useCallback, useEffect, useState, useTransition } from "react";
 import {
   adminAdminDeleteReview,
-  productsListProducts,
-  productsGetProduct,
-  type ReviewRead,
+  adminAdminListReviews,
+  type AdminReviewRead,
 } from "@/lib/api";
 
-interface ReviewWithProduct extends ReviewRead {
-  productTitle?: string;
-}
-
 export function useAdminReviews() {
-  const [reviews, setReviews] = useState<ReviewWithProduct[]>([]);
+  const [reviews, setReviews] = useState<AdminReviewRead[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, startTransition] = useTransition();
 
-  const fetchAllReviews = useCallback(async () => {
+  const fetchReviews = useCallback(() => {
     startTransition(async () => {
       try {
-        const { data: products, error: productsError } =
-          await productsListProducts();
-        if (productsError) throw productsError;
-
-        if (!products || products.length === 0) {
-          setReviews([]);
-          return;
-        }
-
-        const allReviews: ReviewWithProduct[] = [];
-
-        for (const product of products) {
-          const { data: productDetail, error: productError } =
-            await productsGetProduct({
-              path: { product_id: product.id },
-            });
-
-          if (!productError && productDetail?.reviews) {
-            for (const review of productDetail.reviews) {
-              allReviews.push({
-                ...review,
-                productTitle: productDetail.title,
-              });
-            }
-          }
-        }
-
-        setReviews(allReviews);
+        const { data, error } = await adminAdminListReviews();
+        if (error) throw error;
+        setReviews(data ?? []);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load reviews");
@@ -56,8 +26,8 @@ export function useAdminReviews() {
   }, []);
 
   useEffect(() => {
-    fetchAllReviews();
-  }, [fetchAllReviews]);
+    fetchReviews();
+  }, [fetchReviews]);
 
   const deleteReview = useCallback(
     async (reviewId: number) => {
@@ -66,7 +36,7 @@ export function useAdminReviews() {
           path: { review_id: reviewId },
         });
         if (error) throw error;
-        fetchAllReviews();
+        fetchReviews();
         return { success: true };
       } catch (err) {
         return {
@@ -75,14 +45,14 @@ export function useAdminReviews() {
         };
       }
     },
-    [fetchAllReviews],
+    [fetchReviews],
   );
 
   return {
     reviews,
     isLoading,
     error,
-    refetch: fetchAllReviews,
+    refetch: fetchReviews,
     deleteReview,
   };
 }

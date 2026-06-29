@@ -10,7 +10,6 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AddProductForm } from "@/components/admin/AddProductForm";
 import { ProductManagement } from "@/components/admin/ProductManagement";
 import { ReviewModeration } from "@/components/admin/ReviewModeration";
 import { useRouter } from "next/navigation";
@@ -150,14 +149,12 @@ export default function DashboardPage() {
 
               {/* Admin Content */}
               {activeTab === "products" ? (
-                <div className="grid gap-6 md:grid-cols-2">
-                  <AddProductForm onSubmit={createProduct} />
-                  <ProductManagement
-                    products={products}
-                    isLoading={productsLoading}
-                    onDelete={deleteProduct}
-                  />
-                </div>
+                <ProductManagement
+                  products={products}
+                  isLoading={productsLoading}
+                  onDelete={deleteProduct}
+                  onCreate={createProduct}
+                />
               ) : (
                 <ReviewModeration
                   reviews={allReviews}

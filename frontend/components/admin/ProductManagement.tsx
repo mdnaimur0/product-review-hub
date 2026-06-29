@@ -2,10 +2,19 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Trash2, Loader2, Package } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Trash2, Loader2, Package, Plus } from "lucide-react";
 import Image from "next/image";
-import type { ProductListItem } from "@/lib/api";
+import type { ProductListItem, ProductCreate } from "@/lib/api";
 import { toast } from "sonner";
+import { AddProductForm } from "./AddProductForm";
 import Link from "next/link";
 
 interface ProductManagementProps {
@@ -15,14 +24,20 @@ interface ProductManagementProps {
     success: boolean;
     error?: string;
   }>;
+  onCreate: (data: ProductCreate) => Promise<{
+    success: boolean;
+    error?: string;
+  }>;
 }
 
 export function ProductManagement({
   products,
   isLoading,
   onDelete,
+  onCreate,
 }: ProductManagementProps) {
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleDelete = async (productId: number) => {
     setDeletingId(productId);
@@ -70,13 +85,35 @@ export function ProductManagement({
   return (
     <div className="double-bezel">
       <div className="double-bezel-inner bg-card p-6">
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between flex-wrap">
           <h3 className="text-lg font-semibold text-foreground">
             Manage Products
           </h3>
-          <span className="text-sm text-muted-foreground">
-            {products.length} products
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">
+              {products.length} products
+            </span>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger asChild>
+                <Button size="default" className="gap-1.5">
+                  <Plus className="size-3.5" />
+                  Add Product
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Add New Product</DialogTitle>
+                  <DialogDescription>
+                    Fill in the details below to add a new product.
+                  </DialogDescription>
+                </DialogHeader>
+                <AddProductForm
+                  onSubmit={onCreate}
+                  onSuccess={() => setDialogOpen(false)}
+                />
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         {products.length === 0 ? (
@@ -88,29 +125,34 @@ export function ProductManagement({
           <div className="space-y-2">
             {products.map((product) => (
               <Link
-                key={product.id}
                 href={`/products/${product.id}`}
+                key={product.id}
                 className="flex items-center justify-between rounded-lg border border-border p-3 transition-smooth duration-200 hover:bg-muted/50"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center overflow-hidden rounded-lg bg-muted">
+                  <div className="flex items-center justify-center overflow-hidden rounded-lg bg-muted size-12 min-w-12">
                     {product.image_url ? (
                       <Image
                         src={product.image_url}
                         alt={product.title}
-                        width={40}
-                        height={40}
+                        width={48}
+                        height={48}
                         className="size-full object-cover"
                       />
                     ) : (
                       <Package className="size-5 text-muted-foreground/40" />
                     )}
                   </div>
-                  <div>
+                  <div className="w-full">
                     <p className="text-sm font-medium text-foreground">
                       {product.title}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    {product.description && (
+                      <p className="text-xs text-muted-foreground line-clamp-2 md:line-clamp-1">
+                        {product.description}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground/60">
                       {product.review_count} reviews
                     </p>
                   </div>

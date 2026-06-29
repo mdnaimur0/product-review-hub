@@ -4,19 +4,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2, Loader2, Star, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
-
-interface Review {
-  id: number;
-  rating: number;
-  comment?: string;
-  user_name: string;
-  product_id: number;
-  productTitle?: string;
-  created_at: string;
-}
+import type { AdminReviewRead } from "@/lib/api";
+import Link from "next/link";
 
 interface ReviewModerationProps {
-  reviews: Review[];
+  reviews: AdminReviewRead[];
   isLoading: boolean;
   onDelete: (reviewId: number) => Promise<{
     success: boolean;
@@ -97,18 +89,19 @@ export function ReviewModeration({
                 className="rounded-lg border border-border p-4 transition-smooth duration-200 hover:bg-muted/50"
               >
                 <div className="mb-2 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
                       {review.user_name.charAt(0).toUpperCase()}
                     </div>
                     <span className="text-sm font-medium text-foreground">
                       {review.user_name}
                     </span>
-                    {review.productTitle && (
-                      <span className="text-xs text-muted-foreground">
-                        on {review.productTitle}
-                      </span>
-                    )}
+                    <Link
+                      href={`/products/${review.product_id}`}
+                      className="text-xs text-muted-foreground hover:text-primary"
+                    >
+                      on {review.product_title}
+                    </Link>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex gap-0.5">
