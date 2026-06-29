@@ -75,10 +75,25 @@ const handlers = [
     return HttpResponse.json({
       id: "current-user",
       email: "test@example.com",
+      name: "Test User",
       is_active: true,
       is_superuser: false,
       is_verified: true,
     });
+  }),
+
+  http.get(`${API_BASE}/api/reviews/me`, () => {
+    return HttpResponse.json([
+      {
+        id: 1,
+        product_id: 1,
+        user_id: "current-user",
+        user_name: "Test User",
+        rating: 5,
+        comment: "Amazing product!",
+        created_at: "2025-02-01T14:20:00Z",
+      },
+    ]);
   }),
 ];
 
