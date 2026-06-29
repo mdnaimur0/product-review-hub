@@ -27,8 +27,6 @@ AUTH_URL_PATH = "auth"
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
-    reset_password_token_secret = settings.RESET_PASSWORD_SECRET_KEY
-    verification_token_secret = settings.VERIFICATION_SECRET_KEY
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")

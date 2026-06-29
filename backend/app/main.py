@@ -1,11 +1,11 @@
 from fastapi import FastAPI
-from app.utils import generate_unique_route_id
+from .utils import generate_unique_route_id
 
 from fastapi import FastAPI
 from .schemas import UserCreate, UserRead, UserUpdate
 from .users import auth_backend, fastapi_users, AUTH_URL_PATH
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import settings
+from .config import settings
 
 app = FastAPI(
     title="Product Review Hub API",

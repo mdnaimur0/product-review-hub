@@ -8,8 +8,6 @@ class Settings(BaseSettings):
 
     # User
     ACCESS_SECRET_KEY: str
-    RESET_PASSWORD_SECRET_KEY: str
-    VERIFICATION_SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_SECONDS: int = 3600
 
     # Frontend
