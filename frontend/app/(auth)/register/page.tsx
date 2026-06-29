@@ -25,6 +25,19 @@ export default function Page() {
             </div>
             <div className="space-y-5">
               <div className="space-y-2">
+                <Label htmlFor="name" className="text-foreground">
+                  Name
+                </Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Your name"
+                  required
+                />
+                <FieldError state={state} field="name" />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="email" className="text-foreground">
                   Email
                 </Label>

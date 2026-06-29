@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 
 export async function register(prevState: unknown, formData: FormData) {
   const validatedFields = registerSchema.safeParse({
+    name: formData.get("name") as string,
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   });
@@ -22,10 +23,11 @@ export async function register(prevState: unknown, formData: FormData) {
     };
   }
 
-  const { email, password } = validatedFields.data;
+  const { name, email, password } = validatedFields.data;
 
   const input = {
     body: {
+      name,
       email,
       password,
     },

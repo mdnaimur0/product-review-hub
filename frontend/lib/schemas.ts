@@ -11,6 +11,7 @@ const passwordSchema = z
   });
 
 export const registerSchema = z.object({
+  name: z.string().min(1, "Name is required"),
   password: passwordSchema,
   email: z.email({ message: "Invalid email address" }),
 });
