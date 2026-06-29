@@ -1,21 +1,40 @@
 "use client";
 
-import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { useMyReviews } from "@/hooks/useMyReviews";
+import { useAdminProducts } from "@/hooks/useAdminProducts";
+import { useAdminReviews } from "@/hooks/useAdminReviews";
 import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { ErrorAlert } from "@/components/shared/ErrorAlert";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AddProductForm } from "@/components/admin/AddProductForm";
+import { ProductManagement } from "@/components/admin/ProductManagement";
+import { ReviewModeration } from "@/components/admin/ReviewModeration";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Shield, Package, MessageSquare } from "lucide-react";
 
 export default function DashboardPage() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const { reviews, isLoading, error, refetch } = useMyReviews();
+  const {
+    products,
+    isLoading: productsLoading,
+    createProduct,
+    deleteProduct,
+  } = useAdminProducts();
+  const {
+    reviews: allReviews,
+    isLoading: reviewsLoading,
+    deleteReview,
+  } = useAdminReviews();
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"products" | "reviews">(
+    "products",
+  );
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -23,20 +42,32 @@ export default function DashboardPage() {
     }
   }, [authLoading, isAuthenticated, router]);
 
+  const isAdmin = user?.is_superuser === true;
+
   return (
     <>
       <Navbar />
       <main className="flex-1 pt-32 pb-24">
         <div className="mx-auto max-w-4xl px-6">
           <div className="mb-12">
-            <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-              Dashboard
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                Dashboard
+              </h1>
+              {isAdmin && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  <Shield className="size-3" />
+                  Admin
+                </span>
+              )}
+            </div>
             {user && (
               <p className="text-muted-foreground">
                 Welcome back,{" "}
                 <span className="font-medium text-foreground">{user.name}</span>
-                . Here are your reviews.
+                {isAdmin
+                  ? ". Manage products and moderate reviews below."
+                  : ". Here are your reviews."}
               </p>
             )}
           </div>
@@ -79,6 +110,62 @@ export default function DashboardPage() {
                   <ReviewCard review={review} />
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Admin Section */}
+          {isAdmin && (
+            <div className="mt-16">
+              <div className="mb-8 flex items-center gap-3">
+                <h2 className="text-2xl font-bold tracking-tight text-foreground">
+                  Admin Panel
+                </h2>
+                <Shield className="size-5 text-primary" />
+              </div>
+
+              {/* Admin Tabs */}
+              <div className="mb-6 flex gap-2">
+                <button
+                  onClick={() => setActiveTab("products")}
+                  className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-smooth duration-200 ${
+                    activeTab === "products"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  <Package className="size-4" />
+                  Products
+                </button>
+                <button
+                  onClick={() => setActiveTab("reviews")}
+                  className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-smooth duration-200 ${
+                    activeTab === "reviews"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  <MessageSquare className="size-4" />
+                  Reviews
+                </button>
+              </div>
+
+              {/* Admin Content */}
+              {activeTab === "products" ? (
+                <div className="grid gap-6 md:grid-cols-2">
+                  <AddProductForm onSubmit={createProduct} />
+                  <ProductManagement
+                    products={products}
+                    isLoading={productsLoading}
+                    onDelete={deleteProduct}
+                  />
+                </div>
+              ) : (
+                <ReviewModeration
+                  reviews={allReviews}
+                  isLoading={reviewsLoading}
+                  onDelete={deleteReview}
+                />
+              )}
             </div>
           )}
         </div>
