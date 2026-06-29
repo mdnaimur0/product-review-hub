@@ -799,6 +799,25 @@ export type ReviewsUpdateReviewResponses = {
 export type ReviewsUpdateReviewResponse =
   ReviewsUpdateReviewResponses[keyof ReviewsUpdateReviewResponses];
 
+export type AdminAdminListProductsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/admin/products";
+};
+
+export type AdminAdminListProductsResponses = {
+  /**
+   * Response Admin-Admin List Products
+   *
+   * Successful Response
+   */
+  200: Array<ProductRead>;
+};
+
+export type AdminAdminListProductsResponse =
+  AdminAdminListProductsResponses[keyof AdminAdminListProductsResponses];
+
 export type AdminAdminCreateProductData = {
   body: ProductCreate;
   path?: never;

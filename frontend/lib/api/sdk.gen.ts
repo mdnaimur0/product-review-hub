@@ -19,6 +19,8 @@ import type {
   AdminAdminDeleteReviewData,
   AdminAdminDeleteReviewErrors,
   AdminAdminDeleteReviewResponses,
+  AdminAdminListProductsData,
+  AdminAdminListProductsResponses,
   AuthAuthJwtLoginData,
   AuthAuthJwtLoginErrors,
   AuthAuthJwtLoginResponses,
@@ -362,6 +364,22 @@ export const reviewsUpdateReview = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+
+/**
+ * Admin List Products
+ */
+export const adminAdminListProducts = <ThrowOnError extends boolean = false>(
+  options?: Options<AdminAdminListProductsData, ThrowOnError>,
+): RequestResult<AdminAdminListProductsResponses, unknown, ThrowOnError> =>
+  (options?.client ?? client).get<
+    AdminAdminListProductsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/api/admin/products",
+    ...options,
   });
 
 /**
