@@ -3,20 +3,38 @@
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { productsGetProduct, type ProductDetail } from "@/lib/api";
 
-export function useProduct(productId: number) {
+interface UseProductReturn {
+  product: ProductDetail | null;
+  isLoading: boolean;
+  error: string | null;
+  notFound: boolean;
+  refetch: () => void;
+}
+
+export function useProduct(productId: number): UseProductReturn {
   const [product, setProduct] = useState<ProductDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const [isLoading, startTransition] = useTransition();
 
   const fetchProduct = useCallback(() => {
     startTransition(async () => {
       try {
-        const { data, error } = await productsGetProduct({
+        setNotFound(false);
+        const { data, error, response } = await productsGetProduct({
           path: { product_id: productId },
         });
-        if (error) throw error;
+        if (error) {
+          if (response?.status === 404) {
+            setNotFound(true);
+            setError(null);
+            return;
+          }
+          throw error;
+        }
         setProduct(data ?? null);
         setError(null);
+        setNotFound(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load product");
       }
@@ -27,5 +45,5 @@ export function useProduct(productId: number) {
     if (productId) fetchProduct();
   }, [productId, fetchProduct]);
 
-  return { product, isLoading, error, refetch: fetchProduct };
+  return { product, isLoading, error, notFound, refetch: fetchProduct };
 }

@@ -11,6 +11,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { Star } from "lucide-react";
 
 export default function ProductDetailPage({
@@ -20,9 +21,19 @@ export default function ProductDetailPage({
 }) {
   const { id } = use(params);
   const productId = Number(id);
-  const { product, isLoading, error, refetch } = useProduct(productId);
+  const {
+    product,
+    isLoading,
+    error,
+    notFound: isNotFound,
+    refetch,
+  } = useProduct(productId);
   const { isAuthenticated } = useAuth();
   const avgRating = product ? averageRating(product.reviews) : 0;
+
+  if (isNotFound) {
+    notFound();
+  }
 
   return (
     <>
