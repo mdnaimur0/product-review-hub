@@ -1,11 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useState, useTransition } from "react";
 import {
   productsListProducts,
   type PaginatedProductList,
   type ProductListItem,
 } from "@/lib/api";
+import debounce from "lodash/debounce";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 
 export interface ProductFilters {
   search?: string | null;
@@ -61,9 +68,24 @@ export function useProducts(filters?: ProductFilters): UseProductsReturn {
     });
   }, [filters]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+  const debouncedFetchProducts = useMemo(
+    () => debounce(fetchProducts, 500),
+    [fetchProducts],
+  );
 
-  return { products, pagination, isLoading, error, refetch: fetchProducts };
+  useEffect(() => {
+    debouncedFetchProducts();
+
+    return () => {
+      debouncedFetchProducts.cancel();
+    };
+  }, [debouncedFetchProducts]);
+
+  return {
+    products,
+    pagination,
+    isLoading,
+    error,
+    refetch: debouncedFetchProducts,
+  };
 }
