@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { logout } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 const links = [{ href: "/", label: "Home" }];
 
 export function Navbar() {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -56,20 +56,38 @@ export function Navbar() {
                   {label}
                 </Link>
               ))}
+              {isAuthenticated && (
+                <Link
+                  href="/dashboard"
+                  className={cn(
+                    "rounded-full px-4 py-1.5 text-sm font-medium transition-smooth duration-300",
+                    pathname === "/dashboard"
+                      ? "bg-foreground/5 text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  Dashboard
+                </Link>
+              )}
             </div>
 
             <div className="hidden items-center gap-1 pl-2 md:flex">
               {isAuthenticated ? (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-1.5 rounded-full text-muted-foreground hover:text-foreground"
-                  disabled={isPending}
-                  onClick={handleLogout}
-                >
-                  <LogOut className="size-3.5" />
-                  {isPending ? "Signing out..." : "Logout"}
-                </Button>
+                <>
+                  <span className="mr-1 text-sm text-muted-foreground">
+                    {user?.name}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-1.5 rounded-full text-muted-foreground hover:text-foreground"
+                    disabled={isPending}
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="size-3.5" />
+                    {isPending ? "Signing out..." : "Logout"}
+                  </Button>
+                </>
               ) : (
                 <>
                   <Button
@@ -119,16 +137,26 @@ export function Navbar() {
           </Link>
 
           {isAuthenticated ? (
-            <Button
-              variant="ghost"
-              size="lg"
-              className="gap-2 text-lg text-muted-foreground"
-              disabled={isPending}
-              onClick={handleLogout}
-            >
-              <LogOut className="size-4" />
-              {isPending ? "Signing out..." : "Logout"}
-            </Button>
+            <>
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 text-lg font-medium text-muted-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                <LayoutDashboard className="size-5" />
+                Dashboard
+              </Link>
+              <Button
+                variant="ghost"
+                size="lg"
+                className="gap-2 text-lg text-muted-foreground"
+                disabled={isPending}
+                onClick={handleLogout}
+              >
+                <LogOut className="size-4" />
+                {isPending ? "Signing out..." : "Logout"}
+              </Button>
+            </>
           ) : (
             <div className="flex flex-col items-center gap-4">
               <Button
