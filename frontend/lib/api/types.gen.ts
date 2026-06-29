@@ -5,6 +5,44 @@ export type ClientOptions = {
 };
 
 /**
+ * AdminReviewRead
+ */
+export type AdminReviewRead = {
+  /**
+   * Rating
+   */
+  rating: number;
+  /**
+   * Comment
+   */
+  comment?: string;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Product Id
+   */
+  product_id: number;
+  /**
+   * Product Title
+   */
+  product_title: string;
+  /**
+   * User Id
+   */
+  user_id: string;
+  /**
+   * User Name
+   */
+  user_name: string;
+  /**
+   * Created At
+   */
+  created_at: string;
+};
+
+/**
  * BearerResponse
  */
 export type BearerResponse = {
@@ -844,6 +882,25 @@ export type AdminAdminCreateProductResponses = {
 
 export type AdminAdminCreateProductResponse =
   AdminAdminCreateProductResponses[keyof AdminAdminCreateProductResponses];
+
+export type AdminAdminListReviewsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/admin/reviews";
+};
+
+export type AdminAdminListReviewsResponses = {
+  /**
+   * Response Admin-Admin List Reviews
+   *
+   * Successful Response
+   */
+  200: Array<AdminReviewRead>;
+};
+
+export type AdminAdminListReviewsResponse =
+  AdminAdminListReviewsResponses[keyof AdminAdminListReviewsResponses];
 
 export type AdminAdminDeleteProductData = {
   body?: never;
