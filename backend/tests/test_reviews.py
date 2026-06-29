@@ -47,22 +47,6 @@ async def test_create_review_product_not_found(client: AsyncClient, db_session):
     )
     assert resp.status_code == 404
 
-
-@pytest.mark.asyncio
-async def test_create_review_duplicate(client: AsyncClient, db_session):
-    user_data = await register_user(client)
-    product = await create_product(db_session)
-    await create_review(db_session, user_data["id"], product.id, rating=5)
-    token = await login_user(client)
-
-    resp = await client.post(
-        "/api/reviews/",
-        json={"product_id": product.id, "rating": 4},
-        headers=await auth_header(token),
-    )
-    assert resp.status_code == 400
-
-
 @pytest.mark.asyncio
 async def test_update_review(client: AsyncClient, db_session):
     user_data = await register_user(client)

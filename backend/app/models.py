@@ -20,7 +20,7 @@ class Product(Base):
     description: Mapped[str] = mapped_column(Text, default="")
     image_url: Mapped[str | None] = mapped_column(String(512), nullable=True)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
-    reviews: Mapped[list["Review"]] = relationship(back_populates="product")
+    reviews: Mapped[list["Review"]] = relationship(back_populates="product", passive_deletes=True)
 
 
 class Review(Base):

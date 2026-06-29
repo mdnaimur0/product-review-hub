@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_db
@@ -7,6 +8,15 @@ from ..models import Product, Review, User
 from ..schemas import ProductCreate, ProductRead
 
 router = APIRouter()
+
+
+@router.get("/products", response_model=list[ProductRead])
+async def admin_list_products(
+    _admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Product).order_by(Product.created_at.desc()))
+    return result.scalars().all()
 
 
 @router.post("/products", response_model=ProductRead, status_code=201)

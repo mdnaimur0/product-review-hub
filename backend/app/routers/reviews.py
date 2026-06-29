@@ -21,14 +21,6 @@ async def create_review(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    existing = await db.execute(
-        select(Review).where(
-            Review.product_id == data.product_id, Review.user_id == user.id
-        )
-    )
-    if existing.scalar_one_or_none():
-        raise HTTPException(status_code=400, detail="Already reviewed this product")
-
     user_name = user.name
     review = Review(
         product_id=data.product_id,

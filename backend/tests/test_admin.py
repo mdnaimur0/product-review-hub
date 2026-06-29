@@ -12,6 +12,42 @@ from .conftest import (
 
 
 @pytest.mark.asyncio
+async def test_admin_list_products(client: AsyncClient, db_session):
+    await create_product(db_session, title="Alpha")
+    await create_product(db_session, title="Beta")
+
+    await register_admin(client, db_session)
+    token = await login_user(client, email="admin@test.com", password="Admin123!")
+
+    resp = await client.get(
+        "/api/admin/products",
+        headers=await auth_header(token),
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert len(data) == 2
+    titles = {p["title"] for p in data}
+    assert titles == {"Alpha", "Beta"}
+    for p in data:
+        assert "id" in p
+        assert "title" in p
+        assert "description" in p
+        assert "image_url" in p
+
+
+@pytest.mark.asyncio
+async def test_admin_list_products_unauthorized(client: AsyncClient, db_session):
+    await register_user(client)
+    token = await login_user(client)
+
+    resp = await client.get(
+        "/api/admin/products",
+        headers=await auth_header(token),
+    )
+    assert resp.status_code == 403
+
+
+@pytest.mark.asyncio
 async def test_admin_create_product(client: AsyncClient, db_session):
     await register_admin(client, db_session)
     token = await login_user(client, email="admin@test.com", password="Admin123!")
