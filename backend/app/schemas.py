@@ -78,3 +78,11 @@ class AdminReviewRead(ReviewBase):
     user_name: str
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)
+
+
+class PaginatedProductList(BaseModel):
+    items: list[ProductListItem]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
