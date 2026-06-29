@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Loader2, Package } from "lucide-react";
 import Image from "next/image";
 import type { ProductListItem } from "@/lib/api";
+import { toast } from "sonner";
+import Link from "next/link";
 
 interface ProductManagementProps {
   products: ProductListItem[];
@@ -21,16 +23,16 @@ export function ProductManagement({
   onDelete,
 }: ProductManagementProps) {
   const [deletingId, setDeletingId] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const handleDelete = async (productId: number) => {
     setDeletingId(productId);
-    setError(null);
 
     const result = await onDelete(productId);
 
-    if (!result.success) {
-      setError(result.error || "Failed to delete product");
+    if (result.success) {
+      toast.success("Product deleted successfully!");
+    } else {
+      toast.error(result.error || "Failed to delete product");
     }
 
     setDeletingId(null);
@@ -38,7 +40,7 @@ export function ProductManagement({
 
   if (isLoading) {
     return (
-      <div className="double-bezel">
+      <div className="double-bezel h-min">
         <div className="double-bezel-inner bg-card p-6">
           <h3 className="mb-4 text-lg font-semibold text-foreground">
             Manage Products
@@ -77,12 +79,6 @@ export function ProductManagement({
           </span>
         </div>
 
-        {error && (
-          <div className="mb-4 rounded-lg border border-destructive/20 bg-destructive/5 p-3">
-            <p className="text-sm text-destructive">{error}</p>
-          </div>
-        )}
-
         {products.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center">
             <Package className="mb-3 size-10 text-muted-foreground/40" />
@@ -91,8 +87,9 @@ export function ProductManagement({
         ) : (
           <div className="space-y-2">
             {products.map((product) => (
-              <div
+              <Link
                 key={product.id}
+                href={`/products/${product.id}`}
                 className="flex items-center justify-between rounded-lg border border-border p-3 transition-smooth duration-200 hover:bg-muted/50"
               >
                 <div className="flex items-center gap-3">
@@ -131,7 +128,7 @@ export function ProductManagement({
                     <Trash2 className="size-3" />
                   )}
                 </Button>
-              </div>
+              </Link>
             ))}
           </div>
         )}

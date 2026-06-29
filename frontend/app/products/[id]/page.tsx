@@ -79,17 +79,21 @@ export default function ProductDetailPage({
                     </p>
                   )}
                   <div className="flex items-center gap-3">
-                    <StarRating
-                      value={Math.round(avgRating)}
-                      readonly
-                      size="lg"
-                    />
-                    <span className="text-lg font-semibold text-foreground">
-                      {avgRating.toFixed(1)}
-                    </span>
+                    {product.reviews.length > 0 && (
+                      <>
+                        <StarRating
+                          value={Math.round(avgRating)}
+                          readonly
+                          size="lg"
+                        />
+                        <span className="text-lg font-semibold text-foreground">
+                          {avgRating.toFixed(1)}
+                        </span>
+                      </>
+                    )}
                     <span className="text-sm text-muted-foreground">
-                      ({product.reviews.length}{" "}
-                      {product.reviews.length === 1 ? "review" : "reviews"})
+                      {product.reviews.length}{" "}
+                      {product.reviews.length === 1 ? "review" : "reviews"}
                     </span>
                   </div>
                 </div>

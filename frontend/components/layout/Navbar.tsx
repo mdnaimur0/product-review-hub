@@ -74,7 +74,7 @@ export function Navbar() {
             <div className="hidden items-center gap-1 pl-2 md:flex">
               {isAuthenticated ? (
                 <>
-                  <span className="mr-1 text-sm text-muted-foreground">
+                  <span className="mr-1 text-sm text-muted-foreground whitespace-nowrap">
                     {user?.name}
                   </span>
                   <Button

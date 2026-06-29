@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus, Loader2 } from "lucide-react";
 import type { ProductCreate } from "@/lib/api";
+import { toast } from "sonner";
 
 interface AddProductFormProps {
   onSubmit: (data: ProductCreate) => Promise<{
@@ -19,18 +20,14 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
-      setError("Title is required");
+      toast.error("Title is required");
       return;
     }
 
-    setError(null);
-    setSuccess(false);
     startTransition(async () => {
       const result = await onSubmit({
         title: title.trim(),
@@ -42,16 +39,15 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
         setTitle("");
         setDescription("");
         setImageUrl("");
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
+        toast.success("Product created successfully!");
       } else {
-        setError(result.error || "Failed to create product");
+        toast.error(result.error || "Failed to create product");
       }
     });
   };
 
   return (
-    <div className="double-bezel">
+    <div className="double-bezel h-min">
       <div className="double-bezel-inner bg-card p-6">
         <h3 className="mb-4 text-lg font-semibold text-foreground">
           Add New Product
@@ -92,14 +88,6 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
               disabled={isPending}
             />
           </div>
-
-          {error && <p className="text-sm text-destructive">{error}</p>}
-
-          {success && (
-            <p className="text-sm text-primary">
-              Product created successfully!
-            </p>
-          )}
 
           <Button type="submit" disabled={isPending} className="gap-2">
             {isPending ? (

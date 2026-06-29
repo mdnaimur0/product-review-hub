@@ -5,6 +5,8 @@ import { reviewsCreateReview } from "@/lib/api";
 import { StarRating } from "./StarRating";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
+import { getErrorMessage } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface ReviewFormProps {
   productId: number;
@@ -15,16 +17,14 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === 0) {
-      setError("Please select a rating");
+      toast.error("Please select a rating");
       return;
     }
 
-    setError(null);
     startTransition(async () => {
       try {
         const { error: apiError } = await reviewsCreateReview({
@@ -37,10 +37,11 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
         if (apiError) throw apiError;
         setRating(0);
         setComment("");
+        toast.success("Review submitted successfully!");
         onSuccess();
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to submit review",
+        toast.error(
+          getErrorMessage(err as Parameters<typeof getErrorMessage>[0]),
         );
       }
     });
@@ -53,7 +54,6 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
           Your Rating
         </label>
         <StarRating value={rating} onChange={setRating} size="lg" />
-        {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
       </div>
       <div>
         <label

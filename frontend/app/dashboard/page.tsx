@@ -49,7 +49,7 @@ export default function DashboardPage() {
       <Navbar />
       <main className="flex-1 pt-32 pb-24">
         <div className="mx-auto max-w-4xl px-6">
-          <div className="mb-12">
+          <div className="mb-6">
             <div className="flex items-center gap-3">
               <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
                 Dashboard
@@ -65,9 +65,8 @@ export default function DashboardPage() {
               <p className="text-muted-foreground">
                 Welcome back,{" "}
                 <span className="font-medium text-foreground">{user.name}</span>
-                {isAdmin
-                  ? ". Manage products and moderate reviews below."
-                  : ". Here are your reviews."}
+                {". "}
+                Here are your reviews.
               </p>
             )}
           </div>

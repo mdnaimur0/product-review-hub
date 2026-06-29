@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2, Loader2, Star, MessageSquare } from "lucide-react";
+import { toast } from "sonner";
 
 interface Review {
   id: number;
@@ -29,16 +30,16 @@ export function ReviewModeration({
   onDelete,
 }: ReviewModerationProps) {
   const [deletingId, setDeletingId] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const handleDelete = async (reviewId: number) => {
     setDeletingId(reviewId);
-    setError(null);
 
     const result = await onDelete(reviewId);
 
-    if (!result.success) {
-      setError(result.error || "Failed to delete review");
+    if (result.success) {
+      toast.success("Review deleted successfully!");
+    } else {
+      toast.error(result.error || "Failed to delete review");
     }
 
     setDeletingId(null);
@@ -82,12 +83,6 @@ export function ReviewModeration({
             {reviews.length} reviews
           </span>
         </div>
-
-        {error && (
-          <div className="mb-4 rounded-lg border border-destructive/20 bg-destructive/5 p-3">
-            <p className="text-sm text-destructive">{error}</p>
-          </div>
-        )}
 
         {reviews.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center">

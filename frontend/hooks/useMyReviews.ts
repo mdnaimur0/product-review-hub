@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { reviewsGetMyReviews, type ReviewRead } from "@/lib/api";
+import { useAuth } from "./useAuth";
 
 export function useMyReviews() {
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [reviews, setReviews] = useState<ReviewRead[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, startTransition] = useTransition();
@@ -22,8 +24,15 @@ export function useMyReviews() {
   }, []);
 
   useEffect(() => {
-    fetchReviews();
-  }, [fetchReviews]);
+    if (isAuthenticated) {
+      fetchReviews();
+    }
+  }, [isAuthenticated, fetchReviews]);
 
-  return { reviews, isLoading, error, refetch: fetchReviews };
+  return {
+    reviews,
+    isLoading: isLoading || authLoading,
+    error,
+    refetch: fetchReviews,
+  };
 }

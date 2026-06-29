@@ -17,7 +17,7 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       <div className="double-bezel transition-smooth duration-500 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:shadow-black/5">
         <div className="double-bezel-inner bg-card">
-          <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+          <div className="relative aspect-4/3 overflow-hidden bg-muted">
             {product.image_url ? (
               <Image
                 src={product.image_url}
@@ -64,7 +64,7 @@ function RatingStars({ rating }: { rating: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`size-3.5 ${
+          className={`size-3.5 stroke-amber-400 stroke-1 ${
             i < Math.round(rating)
               ? "fill-amber-400 text-amber-400"
               : "fill-muted/50 text-muted/50"

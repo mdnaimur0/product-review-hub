@@ -45,6 +45,7 @@ export function StarRating({
                 filled
                   ? "fill-amber-400 text-amber-400"
                   : "fill-muted/30 text-muted/30",
+                "stroke-1 stroke-amber-400",
               )}
             />
           </button>

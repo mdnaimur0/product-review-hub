@@ -6,9 +6,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getErrorMessage(
-  error: AuthRegisterRegisterError | AuthAuthJwtLoginError,
-): string {
+type ApiError =
+  | AuthRegisterRegisterError
+  | AuthAuthJwtLoginError
+  | { detail: string | Record<string, string> | Array<{ msg: string }> }
+  | string;
+
+export function getErrorMessage(error: ApiError): string {
+  if (typeof error === "string") {
+    return error;
+  }
+
   if (typeof error.detail === "string") {
     return error.detail;
   }
