@@ -4,20 +4,20 @@ import { useCallback, useEffect, useState, useTransition } from "react";
 import {
   adminAdminCreateProduct,
   adminAdminDeleteProduct,
-  productsListProducts,
-  type ProductListItem,
+  adminAdminListProducts,
+  type ProductRead,
   type ProductCreate,
 } from "@/lib/api";
 
 export function useAdminProducts() {
-  const [products, setProducts] = useState<ProductListItem[]>([]);
+  const [products, setProducts] = useState<ProductRead[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, startTransition] = useTransition();
 
   const fetchProducts = useCallback(() => {
     startTransition(async () => {
       try {
-        const { data, error } = await productsListProducts();
+        const { data, error } = await adminAdminListProducts();
         if (error) throw error;
         setProducts(data ?? []);
         setError(null);

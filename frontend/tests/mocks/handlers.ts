@@ -5,24 +5,30 @@ const API_BASE = "http://localhost:8000";
 
 const handlers = [
   http.get(`${API_BASE}/api/products`, () => {
-    return HttpResponse.json([
-      {
-        id: 1,
-        title: "Test Product",
-        description: "A great product for testing",
-        image_url: null,
-        average_rating: 4.2,
-        review_count: 3,
-      },
-      {
-        id: 2,
-        title: "Another Product",
-        description: "Another excellent product",
-        image_url: "https://example.com/image.jpg",
-        average_rating: 3.8,
-        review_count: 5,
-      },
-    ]);
+    return HttpResponse.json({
+      items: [
+        {
+          id: 1,
+          title: "Test Product",
+          description: "A great product for testing",
+          image_url: null,
+          average_rating: 4.2,
+          review_count: 3,
+        },
+        {
+          id: 2,
+          title: "Another Product",
+          description: "Another excellent product",
+          image_url: "https://example.com/image.jpg",
+          average_rating: 3.8,
+          review_count: 5,
+        },
+      ],
+      total: 2,
+      page: 1,
+      page_size: 12,
+      total_pages: 1,
+    });
   }),
 
   http.get(`${API_BASE}/api/products/:productId`, ({ params }) => {

@@ -12,13 +12,13 @@ import {
 } from "@/components/ui/dialog";
 import { Trash2, Loader2, Package, Plus } from "lucide-react";
 import Image from "next/image";
-import type { ProductListItem, ProductCreate } from "@/lib/api";
+import type { ProductRead, ProductCreate } from "@/lib/api";
 import { toast } from "sonner";
 import { AddProductForm } from "./AddProductForm";
 import Link from "next/link";
 
 interface ProductManagementProps {
-  products: ProductListItem[];
+  products: ProductRead[];
   isLoading: boolean;
   onDelete: (productId: number) => Promise<{
     success: boolean;
@@ -153,7 +153,7 @@ export function ProductManagement({
                       </p>
                     )}
                     <p className="text-xs text-muted-foreground/60">
-                      {product.review_count} reviews
+                      Added {new Date(product.created_at).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
