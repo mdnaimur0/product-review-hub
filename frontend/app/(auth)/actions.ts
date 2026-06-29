@@ -95,7 +95,7 @@ export async function logout() {
   });
 
   if (error) {
-    return { message: error };
+    return { message: typeof error === "string" ? error : "Logout failed" };
   }
 
   cookieStore.delete("accessToken");

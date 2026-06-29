@@ -9,15 +9,21 @@ export function cn(...inputs: ClassValue[]) {
 export function getErrorMessage(
   error: AuthRegisterRegisterError | AuthAuthJwtLoginError,
 ): string {
-  let errorMessage = "An unknown error occurred";
-
   if (typeof error.detail === "string") {
-    // If detail is a string, use it directly
-    errorMessage = error.detail;
-  } else if (typeof error.detail === "object" && "reason" in error.detail) {
-    // If detail is an object with a 'reason' key, use that
-    errorMessage = error.detail["reason"];
+    return error.detail;
   }
 
-  return errorMessage;
+  if (Array.isArray(error.detail)) {
+    return error.detail.map((e) => e.msg).join(", ");
+  }
+
+  if (
+    typeof error.detail === "object" &&
+    error.detail !== null &&
+    "reason" in error.detail
+  ) {
+    return (error.detail as { reason: string }).reason;
+  }
+
+  return "An unknown error occurred";
 }
