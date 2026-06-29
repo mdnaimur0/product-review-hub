@@ -39,3 +39,8 @@ app.include_router(
 app.include_router(products.router, prefix=f"/api/products", tags=["products"])
 app.include_router(reviews.router, prefix=f"/api/reviews", tags=["reviews"])
 app.include_router(admin.router, prefix=f"/api/admin", tags=["admin"])
+
+
+@app.get("/health", tags=["health"])
+def health_check():
+    return {"status": "ok"}
