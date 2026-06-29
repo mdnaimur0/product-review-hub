@@ -43,6 +43,132 @@ export type HttpValidationError = {
 };
 
 /**
+ * ProductDetail
+ */
+export type ProductDetail = {
+  /**
+   * Title
+   */
+  title: string;
+  /**
+   * Description
+   */
+  description?: string;
+  /**
+   * Image Url
+   */
+  image_url?: string | null;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Created At
+   */
+  created_at: string;
+  /**
+   * Reviews
+   */
+  reviews: Array<ReviewRead>;
+};
+
+/**
+ * ProductListItem
+ */
+export type ProductListItem = {
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Title
+   */
+  title: string;
+  /**
+   * Description
+   */
+  description: string;
+  /**
+   * Image Url
+   */
+  image_url: string | null;
+  /**
+   * Average Rating
+   */
+  average_rating: number;
+  /**
+   * Review Count
+   */
+  review_count: number;
+};
+
+/**
+ * ReviewCreate
+ */
+export type ReviewCreate = {
+  /**
+   * Rating
+   */
+  rating: number;
+  /**
+   * Comment
+   */
+  comment?: string;
+  /**
+   * Product Id
+   */
+  product_id: number;
+};
+
+/**
+ * ReviewRead
+ */
+export type ReviewRead = {
+  /**
+   * Rating
+   */
+  rating: number;
+  /**
+   * Comment
+   */
+  comment?: string;
+  /**
+   * Id
+   */
+  id: number;
+  /**
+   * Product Id
+   */
+  product_id: number;
+  /**
+   * User Id
+   */
+  user_id: string;
+  /**
+   * User Name
+   */
+  user_name: string;
+  /**
+   * Created At
+   */
+  created_at: string;
+};
+
+/**
+ * ReviewUpdate
+ */
+export type ReviewUpdate = {
+  /**
+   * Rating
+   */
+  rating?: number | null;
+  /**
+   * Comment
+   */
+  comment?: string | null;
+};
+
+/**
  * UserCreate
  */
 export type UserCreate = {
@@ -455,3 +581,145 @@ export type UsersUsersPatchUserResponses = {
 
 export type UsersUsersPatchUserResponse =
   UsersUsersPatchUserResponses[keyof UsersUsersPatchUserResponses];
+
+export type ProductsListProductsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/products";
+};
+
+export type ProductsListProductsResponses = {
+  /**
+   * Response Products-List Products
+   *
+   * Successful Response
+   */
+  200: Array<ProductListItem>;
+};
+
+export type ProductsListProductsResponse =
+  ProductsListProductsResponses[keyof ProductsListProductsResponses];
+
+export type ProductsGetProductData = {
+  body?: never;
+  path: {
+    /**
+     * Product Id
+     */
+    product_id: number;
+  };
+  query?: never;
+  url: "/api/products/{product_id}";
+};
+
+export type ProductsGetProductErrors = {
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type ProductsGetProductError =
+  ProductsGetProductErrors[keyof ProductsGetProductErrors];
+
+export type ProductsGetProductResponses = {
+  /**
+   * Successful Response
+   */
+  200: ProductDetail;
+};
+
+export type ProductsGetProductResponse =
+  ProductsGetProductResponses[keyof ProductsGetProductResponses];
+
+export type ReviewsCreateReviewData = {
+  body: ReviewCreate;
+  path?: never;
+  query?: never;
+  url: "/api/reviews";
+};
+
+export type ReviewsCreateReviewErrors = {
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type ReviewsCreateReviewError =
+  ReviewsCreateReviewErrors[keyof ReviewsCreateReviewErrors];
+
+export type ReviewsCreateReviewResponses = {
+  /**
+   * Successful Response
+   */
+  201: ReviewRead;
+};
+
+export type ReviewsCreateReviewResponse =
+  ReviewsCreateReviewResponses[keyof ReviewsCreateReviewResponses];
+
+export type ReviewsDeleteReviewData = {
+  body?: never;
+  path: {
+    /**
+     * Review Id
+     */
+    review_id: number;
+  };
+  query?: never;
+  url: "/api/reviews/{review_id}";
+};
+
+export type ReviewsDeleteReviewErrors = {
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type ReviewsDeleteReviewError =
+  ReviewsDeleteReviewErrors[keyof ReviewsDeleteReviewErrors];
+
+export type ReviewsDeleteReviewResponses = {
+  /**
+   * Successful Response
+   */
+  204: void;
+};
+
+export type ReviewsDeleteReviewResponse =
+  ReviewsDeleteReviewResponses[keyof ReviewsDeleteReviewResponses];
+
+export type ReviewsUpdateReviewData = {
+  body: ReviewUpdate;
+  path: {
+    /**
+     * Review Id
+     */
+    review_id: number;
+  };
+  query?: never;
+  url: "/api/reviews/{review_id}";
+};
+
+export type ReviewsUpdateReviewErrors = {
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type ReviewsUpdateReviewError =
+  ReviewsUpdateReviewErrors[keyof ReviewsUpdateReviewErrors];
+
+export type ReviewsUpdateReviewResponses = {
+  /**
+   * Successful Response
+   */
+  200: ReviewRead;
+};
+
+export type ReviewsUpdateReviewResponse =
+  ReviewsUpdateReviewResponses[keyof ReviewsUpdateReviewResponses];

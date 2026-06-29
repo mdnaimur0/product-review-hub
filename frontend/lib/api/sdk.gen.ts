@@ -19,6 +19,20 @@ import type {
   AuthRegisterRegisterData,
   AuthRegisterRegisterErrors,
   AuthRegisterRegisterResponses,
+  ProductsGetProductData,
+  ProductsGetProductErrors,
+  ProductsGetProductResponses,
+  ProductsListProductsData,
+  ProductsListProductsResponses,
+  ReviewsCreateReviewData,
+  ReviewsCreateReviewErrors,
+  ReviewsCreateReviewResponses,
+  ReviewsDeleteReviewData,
+  ReviewsDeleteReviewErrors,
+  ReviewsDeleteReviewResponses,
+  ReviewsUpdateReviewData,
+  ReviewsUpdateReviewErrors,
+  ReviewsUpdateReviewResponses,
   UsersUsersCurrentUserData,
   UsersUsersCurrentUserErrors,
   UsersUsersCurrentUserResponses,
@@ -220,6 +234,102 @@ export const usersUsersPatchUser = <ThrowOnError extends boolean = false>(
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/users/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * List Products
+ */
+export const productsListProducts = <ThrowOnError extends boolean = false>(
+  options?: Options<ProductsListProductsData, ThrowOnError>,
+): RequestResult<ProductsListProductsResponses, unknown, ThrowOnError> =>
+  (options?.client ?? client).get<
+    ProductsListProductsResponses,
+    unknown,
+    ThrowOnError
+  >({ url: "/api/products", ...options });
+
+/**
+ * Get Product
+ */
+export const productsGetProduct = <ThrowOnError extends boolean = false>(
+  options: Options<ProductsGetProductData, ThrowOnError>,
+): RequestResult<
+  ProductsGetProductResponses,
+  ProductsGetProductErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).get<
+    ProductsGetProductResponses,
+    ProductsGetProductErrors,
+    ThrowOnError
+  >({ url: "/api/products/{product_id}", ...options });
+
+/**
+ * Create Review
+ */
+export const reviewsCreateReview = <ThrowOnError extends boolean = false>(
+  options: Options<ReviewsCreateReviewData, ThrowOnError>,
+): RequestResult<
+  ReviewsCreateReviewResponses,
+  ReviewsCreateReviewErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).post<
+    ReviewsCreateReviewResponses,
+    ReviewsCreateReviewErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/api/reviews",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * Delete Review
+ */
+export const reviewsDeleteReview = <ThrowOnError extends boolean = false>(
+  options: Options<ReviewsDeleteReviewData, ThrowOnError>,
+): RequestResult<
+  ReviewsDeleteReviewResponses,
+  ReviewsDeleteReviewErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).delete<
+    ReviewsDeleteReviewResponses,
+    ReviewsDeleteReviewErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/api/reviews/{review_id}",
+    ...options,
+  });
+
+/**
+ * Update Review
+ */
+export const reviewsUpdateReview = <ThrowOnError extends boolean = false>(
+  options: Options<ReviewsUpdateReviewData, ThrowOnError>,
+): RequestResult<
+  ReviewsUpdateReviewResponses,
+  ReviewsUpdateReviewErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).put<
+    ReviewsUpdateReviewResponses,
+    ReviewsUpdateReviewErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/api/reviews/{review_id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
