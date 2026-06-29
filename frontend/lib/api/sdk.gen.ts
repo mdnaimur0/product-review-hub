@@ -36,6 +36,7 @@ import type {
   ProductsGetProductErrors,
   ProductsGetProductResponses,
   ProductsListProductsData,
+  ProductsListProductsErrors,
   ProductsListProductsResponses,
   ReviewsCreateReviewData,
   ReviewsCreateReviewErrors,
@@ -261,10 +262,14 @@ export const usersUsersPatchUser = <ThrowOnError extends boolean = false>(
  */
 export const productsListProducts = <ThrowOnError extends boolean = false>(
   options?: Options<ProductsListProductsData, ThrowOnError>,
-): RequestResult<ProductsListProductsResponses, unknown, ThrowOnError> =>
+): RequestResult<
+  ProductsListProductsResponses,
+  ProductsListProductsErrors,
+  ThrowOnError
+> =>
   (options?.client ?? client).get<
     ProductsListProductsResponses,
-    unknown,
+    ProductsListProductsErrors,
     ThrowOnError
   >({ url: "/api/products/", ...options });
 

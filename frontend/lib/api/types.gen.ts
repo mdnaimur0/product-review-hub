@@ -81,6 +81,32 @@ export type HttpValidationError = {
 };
 
 /**
+ * PaginatedProductList
+ */
+export type PaginatedProductList = {
+  /**
+   * Items
+   */
+  items: Array<ProductListItem>;
+  /**
+   * Total
+   */
+  total: number;
+  /**
+   * Page
+   */
+  page: number;
+  /**
+   * Page Size
+   */
+  page_size: number;
+  /**
+   * Total Pages
+   */
+  total_pages: number;
+};
+
+/**
  * ProductCreate
  */
 export type ProductCreate = {
@@ -679,17 +705,56 @@ export type UsersUsersPatchUserResponse =
 export type ProductsListProductsData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    /**
+     * Search
+     *
+     * Search product titles
+     */
+    search?: string | null;
+    /**
+     * Min Rating
+     *
+     * Minimum average rating
+     */
+    min_rating?: number | null;
+    /**
+     * Max Rating
+     *
+     * Maximum average rating
+     */
+    max_rating?: number | null;
+    /**
+     * Page
+     *
+     * Page number
+     */
+    page?: number;
+    /**
+     * Page Size
+     *
+     * Items per page
+     */
+    page_size?: number;
+  };
   url: "/api/products/";
 };
 
+export type ProductsListProductsErrors = {
+  /**
+   * Validation Error
+   */
+  422: HttpValidationError;
+};
+
+export type ProductsListProductsError =
+  ProductsListProductsErrors[keyof ProductsListProductsErrors];
+
 export type ProductsListProductsResponses = {
   /**
-   * Response Products-List Products
-   *
    * Successful Response
    */
-  200: Array<ProductListItem>;
+  200: PaginatedProductList;
 };
 
 export type ProductsListProductsResponse =
