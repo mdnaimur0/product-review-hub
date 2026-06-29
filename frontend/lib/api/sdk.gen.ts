@@ -95,7 +95,7 @@ export const authAuthJwtLogin = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     ...urlSearchParamsBodySerializer,
-    url: "/auth/jwt/login",
+    url: "/api/auth/jwt/login",
     ...options,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -119,7 +119,7 @@ export const authAuthJwtLogout = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/auth/jwt/logout",
+    url: "/api/auth/jwt/logout",
     ...options,
   });
 
@@ -138,7 +138,7 @@ export const authRegisterRegister = <ThrowOnError extends boolean = false>(
     AuthRegisterRegisterErrors,
     ThrowOnError
   >({
-    url: "/auth/register",
+    url: "/api/auth/register",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -162,7 +162,7 @@ export const usersUsersCurrentUser = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/users/me",
+    url: "/api/users/me",
     ...options,
   });
 
@@ -184,7 +184,7 @@ export const usersUsersPatchCurrentUser = <
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/users/me",
+    url: "/api/users/me",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -208,7 +208,7 @@ export const usersUsersDeleteUser = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/users/{id}",
+    url: "/api/users/{id}",
     ...options,
   });
 
@@ -224,7 +224,7 @@ export const usersUsersUser = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/users/{id}",
+    url: "/api/users/{id}",
     ...options,
   });
 
@@ -244,7 +244,7 @@ export const usersUsersPatchUser = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/users/{id}",
+    url: "/api/users/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -262,7 +262,7 @@ export const productsListProducts = <ThrowOnError extends boolean = false>(
     ProductsListProductsResponses,
     unknown,
     ThrowOnError
-  >({ url: "/api/products", ...options });
+  >({ url: "/api/products/", ...options });
 
 /**
  * Get Product
@@ -296,7 +296,7 @@ export const reviewsCreateReview = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     security: [{ scheme: "bearer", type: "http" }],
-    url: "/api/reviews",
+    url: "/api/reviews/",
     ...options,
     headers: {
       "Content-Type": "application/json",

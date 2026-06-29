@@ -364,7 +364,7 @@ export type AuthAuthJwtLoginData = {
   body: Login;
   path?: never;
   query?: never;
-  url: "/auth/jwt/login";
+  url: "/api/auth/jwt/login";
 };
 
 export type AuthAuthJwtLoginErrors = {
@@ -395,7 +395,7 @@ export type AuthAuthJwtLogoutData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/auth/jwt/logout";
+  url: "/api/auth/jwt/logout";
 };
 
 export type AuthAuthJwtLogoutErrors = {
@@ -416,7 +416,7 @@ export type AuthRegisterRegisterData = {
   body: UserCreate;
   path?: never;
   query?: never;
-  url: "/auth/register";
+  url: "/api/auth/register";
 };
 
 export type AuthRegisterRegisterErrors = {
@@ -447,7 +447,7 @@ export type UsersUsersCurrentUserData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/users/me";
+  url: "/api/users/me";
 };
 
 export type UsersUsersCurrentUserErrors = {
@@ -471,7 +471,7 @@ export type UsersUsersPatchCurrentUserData = {
   body: UserUpdate;
   path?: never;
   query?: never;
-  url: "/users/me";
+  url: "/api/users/me";
 };
 
 export type UsersUsersPatchCurrentUserErrors = {
@@ -511,7 +511,7 @@ export type UsersUsersDeleteUserData = {
     id: string;
   };
   query?: never;
-  url: "/users/{id}";
+  url: "/api/users/{id}";
 };
 
 export type UsersUsersDeleteUserErrors = {
@@ -555,7 +555,7 @@ export type UsersUsersUserData = {
     id: string;
   };
   query?: never;
-  url: "/users/{id}";
+  url: "/api/users/{id}";
 };
 
 export type UsersUsersUserErrors = {
@@ -599,7 +599,7 @@ export type UsersUsersPatchUserData = {
     id: string;
   };
   query?: never;
-  url: "/users/{id}";
+  url: "/api/users/{id}";
 };
 
 export type UsersUsersPatchUserErrors = {
@@ -642,7 +642,7 @@ export type ProductsListProductsData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/api/products";
+  url: "/api/products/";
 };
 
 export type ProductsListProductsResponses = {
@@ -693,7 +693,7 @@ export type ReviewsCreateReviewData = {
   body: ReviewCreate;
   path?: never;
   query?: never;
-  url: "/api/reviews";
+  url: "/api/reviews/";
 };
 
 export type ReviewsCreateReviewErrors = {
