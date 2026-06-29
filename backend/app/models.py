@@ -9,7 +9,7 @@ from .database import Base
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
-    pass
+    name: Mapped[str] = mapped_column(String(255), default="")
 
 
 class Product(Base):

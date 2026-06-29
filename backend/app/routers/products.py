@@ -5,7 +5,7 @@ from sqlalchemy.orm import selectinload
 
 from ..database import get_db
 from ..models import Product, Review
-from ..schemas import ProductDetail, ProductListItem
+from ..schemas import ProductDetail, ProductListItem, ReviewRead
 
 router = APIRouter()
 
@@ -53,15 +53,15 @@ async def get_product(product_id: int, db: AsyncSession = Depends(get_db)):
         image_url=product.image_url,
         created_at=product.created_at,
         reviews=[
-            {
-                "id": r.id,
-                "product_id": r.product_id,
-                "user_id": r.user_id,
-                "user_name": r.user.email,
-                "rating": r.rating,
-                "comment": r.comment,
-                "created_at": r.created_at,
-            }
+            ReviewRead(
+                id=r.id,
+                product_id=r.product_id,
+                user_id=r.user_id,
+                user_name=(r.user.name if r.user is not None else ""),
+                rating=r.rating,
+                comment=r.comment,
+                created_at=r.created_at,
+            )
             for r in product.reviews
         ],
     )

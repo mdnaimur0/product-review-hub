@@ -6,15 +6,15 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class UserRead(schemas.BaseUser[uuid.UUID]):
-    pass
+    name: str
 
 
 class UserCreate(schemas.BaseUserCreate):
-    pass
+    name: str = ""
 
 
 class UserUpdate(schemas.BaseUserUpdate):
-    pass
+    name: str | None = None
 
 
 class ProductBase(BaseModel):

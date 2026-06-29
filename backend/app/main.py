@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
-from .routers import products, reviews
+from .routers import admin, products, reviews
 from .schemas import UserCreate, UserRead, UserUpdate
 from .users import auth_backend, fastapi_users, AUTH_URL_PATH
 from .utils import generate_unique_route_id
@@ -38,3 +38,4 @@ app.include_router(
 )
 app.include_router(products.router, prefix="/api", tags=["products"])
 app.include_router(reviews.router, prefix="/api", tags=["reviews"])
+app.include_router(admin.router, prefix="/api/admin", tags=["admin"])

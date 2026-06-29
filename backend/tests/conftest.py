@@ -19,6 +19,7 @@ TestSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
 TEST_EMAIL = "test@example.com"
 TEST_PASSWORD = "Secret123!"
+TEST_NAME = "Test User"
 
 
 @pytest_asyncio.fixture
@@ -44,10 +45,15 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
     app.dependency_overrides.clear()
 
 
-async def register_user(client: AsyncClient, email: str = TEST_EMAIL, password: str = TEST_PASSWORD) -> dict:
+async def register_user(
+    client: AsyncClient,
+    email: str = TEST_EMAIL,
+    password: str = TEST_PASSWORD,
+    name: str = TEST_NAME,
+) -> dict:
     resp = await client.post(
         "/auth/register",
-        json={"email": email, "password": password},
+        json={"email": email, "password": password, "name": name},
     )
     assert resp.status_code == 201
     return resp.json()
@@ -88,3 +94,22 @@ async def create_review(db: AsyncSession, user_id: uuid.UUID, product_id: int, *
     await db.commit()
     await db.refresh(review)
     return review
+
+
+async def make_admin(db: AsyncSession, user_id: uuid.UUID) -> None:
+    from sqlalchemy import update
+
+    await db.execute(update(User).where(User.id == user_id).values(is_superuser=True))
+    await db.commit()
+
+
+async def register_admin(
+    client: AsyncClient,
+    db: AsyncSession,
+    email: str = "admin@test.com",
+    password: str = "Admin123!",
+    name: str = "Admin User",
+) -> dict:
+    user_data = await register_user(client, email=email, password=password, name=name)
+    await make_admin(db, uuid.UUID(user_data["id"]))
+    return user_data

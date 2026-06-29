@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from ..database import get_db
 from ..dependencies import get_current_active_user
@@ -41,11 +42,37 @@ async def create_review(
         id=review.id,
         product_id=review.product_id,
         user_id=review.user_id,
-        user_name=user.email,
+        user_name=user.name,
         rating=review.rating,
         comment=review.comment,
         created_at=review.created_at,
     )
+
+
+@router.get("/reviews/me", response_model=list[ReviewRead])
+async def get_my_reviews(
+    user: User = Depends(get_current_active_user),
+    db: AsyncSession = Depends(get_db),
+):
+    stmt = (
+        select(Review)
+        .options(selectinload(Review.product))
+        .where(Review.user_id == user.id)
+        .order_by(Review.created_at.desc())
+    )
+    reviews = (await db.execute(stmt)).scalars().all()
+    return [
+        ReviewRead(
+            id=r.id,
+            product_id=r.product_id,
+            user_id=r.user_id,
+            user_name=user.name,
+            rating=r.rating,
+            comment=r.comment,
+            created_at=r.created_at,
+        )
+        for r in reviews
+    ]
 
 
 async def _get_owned_review(
@@ -77,7 +104,7 @@ async def update_review(
         id=review.id,
         product_id=review.product_id,
         user_id=review.user_id,
-        user_name=user.email,
+        user_name=user.name,
         rating=review.rating,
         comment=review.comment,
         created_at=review.created_at,
