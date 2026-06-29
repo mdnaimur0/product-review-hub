@@ -1,11 +1,11 @@
 from fastapi import FastAPI
-from .utils import generate_unique_route_id
+from fastapi.middleware.cors import CORSMiddleware
 
-from fastapi import FastAPI
+from .config import settings
+from .routers import products, reviews
 from .schemas import UserCreate, UserRead, UserUpdate
 from .users import auth_backend, fastapi_users, AUTH_URL_PATH
-from fastapi.middleware.cors import CORSMiddleware
-from .config import settings
+from .utils import generate_unique_route_id
 
 app = FastAPI(
     title="Product Review Hub API",
@@ -21,7 +21,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include authentication and user management routes
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix=f"/{AUTH_URL_PATH}/jwt",
@@ -37,3 +36,5 @@ app.include_router(
     prefix="/users",
     tags=["users"],
 )
+app.include_router(products.router, prefix="/api", tags=["products"])
+app.include_router(reviews.router, prefix="/api", tags=["reviews"])

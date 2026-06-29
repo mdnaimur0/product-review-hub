@@ -5,9 +5,13 @@ from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase
 
 from .config import settings
-from .models import Base, User
+
+
+class Base(DeclarativeBase):
+    pass
 
 
 parsed_db_url = urlparse(settings.DATABASE_URL)
@@ -18,7 +22,6 @@ async_db_connection_url = (
     f"{parsed_db_url.path}"
 )
 
-# Disable connection pooling for serverless environments like Vercel
 engine = create_async_engine(async_db_connection_url, poolclass=NullPool)
 
 async_session_maker = async_sessionmaker(
@@ -31,10 +34,12 @@ async def create_db_and_tables():
         await conn.run_sync(Base.metadata.create_all)
 
 
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session
 
 
-async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+async def get_user_db(session: AsyncSession = Depends(get_db)):
+    from .models import User
+
     yield SQLAlchemyUserDatabase(session, User)
