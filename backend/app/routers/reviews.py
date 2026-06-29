@@ -11,7 +11,7 @@ from ..schemas import ReviewCreate, ReviewRead, ReviewUpdate
 router = APIRouter()
 
 
-@router.post("/reviews", response_model=ReviewRead, status_code=201)
+@router.post("/", response_model=ReviewRead, status_code=201)
 async def create_review(
     data: ReviewCreate,
     user: User = Depends(get_current_active_user),
@@ -49,7 +49,7 @@ async def create_review(
     )
 
 
-@router.get("/reviews/me", response_model=list[ReviewRead])
+@router.get("/me", response_model=list[ReviewRead])
 async def get_my_reviews(
     user: User = Depends(get_current_active_user),
     db: AsyncSession = Depends(get_db),
@@ -86,7 +86,7 @@ async def _get_owned_review(
     return review
 
 
-@router.put("/reviews/{review_id}", response_model=ReviewRead)
+@router.put("/{review_id}", response_model=ReviewRead)
 async def update_review(
     review_id: int,
     data: ReviewUpdate,
@@ -111,7 +111,7 @@ async def update_review(
     )
 
 
-@router.delete("/reviews/{review_id}", status_code=204)
+@router.delete("/{review_id}", status_code=204)
 async def delete_review(
     review_id: int,
     user: User = Depends(get_current_active_user),

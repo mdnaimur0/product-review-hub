@@ -10,7 +10,7 @@ from ..schemas import ProductDetail, ProductListItem, ReviewRead
 router = APIRouter()
 
 
-@router.get("/products", response_model=list[ProductListItem])
+@router.get("/", response_model=list[ProductListItem])
 async def list_products(db: AsyncSession = Depends(get_db)):
     stmt = (
         select(
@@ -36,7 +36,7 @@ async def list_products(db: AsyncSession = Depends(get_db)):
     ]
 
 
-@router.get("/products/{product_id}", response_model=ProductDetail)
+@router.get("/{product_id}", response_model=ProductDetail)
 async def get_product(product_id: int, db: AsyncSession = Depends(get_db)):
     stmt = (
         select(Product)

@@ -22,20 +22,20 @@ app.add_middleware(
 )
 
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend),
-    prefix=f"/{AUTH_URL_PATH}/jwt",
+    fastapi_users.get_auth_router(auth_backend, requires_verification=False),
+    prefix=f"/api/{AUTH_URL_PATH}/jwt",
     tags=["auth"],
 )
 app.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix=f"/{AUTH_URL_PATH}",
+    prefix=f"/api/{AUTH_URL_PATH}",
     tags=["auth"],
 )
 app.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate),
-    prefix="/users",
+    fastapi_users.get_users_router(UserRead, UserUpdate, requires_verification=False),
+    prefix=f"/api/users",
     tags=["users"],
 )
-app.include_router(products.router, prefix="/api", tags=["products"])
-app.include_router(reviews.router, prefix="/api", tags=["reviews"])
-app.include_router(admin.router, prefix="/api/admin", tags=["admin"])
+app.include_router(products.router, prefix=f"/api/products", tags=["products"])
+app.include_router(reviews.router, prefix=f"/api/reviews", tags=["reviews"])
+app.include_router(admin.router, prefix=f"/api/admin", tags=["admin"])
