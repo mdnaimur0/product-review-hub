@@ -14,7 +14,6 @@ This project is designed to showcase full-stack engineering skills across the co
 - **Backend (FastAPI):** Async Python, SQLAlchemy 2.x, Alembic migrations, Pydantic validation, JWT auth
 - **Database (PostgreSQL):** Relational schema design, indexed queries, cascade deletes
 - **Testing:** Backend tests (pytest + async fixtures) and frontend tests (Vitest + MSW)
-- **DevOps:** Dockerized PostgreSQL, environment configuration, CI-ready
 
 ---
 
@@ -93,9 +92,9 @@ product-review-hub/
 
 ```bash
 cd backend
-alembic upgrade head
-alembic current
-alembic downgrade -1
+uv run alembic upgrade head
+uv run alembic current
+uv run alembic downgrade -1
 ```
 
 ---
@@ -164,9 +163,9 @@ cd product-review-hub
 cd backend
 uv venv && uv sync
 cp .env.example .env   # edit with your DB URL and secret key
-alembic upgrade head
-python scripts/seed_products.py   # seed 10 sample products (optional)
-uvicorn app.main:app --reload
+uv run alembic upgrade head
+uv run python scripts/seed_products.py   # seed 20-25 sample products (optional)
+uv run fastapi dev app/main.py --host 0.0.0.0 --port 8000 --reload
 ```
 
 Backend → `http://localhost:8000` | API docs → `http://localhost:8000/docs`
@@ -220,7 +219,7 @@ Uses an in-memory SQLite database — no PostgreSQL needed.
 
 ```bash
 cd backend
-pytest
+uv run pytest
 ```
 
 ### Frontend (Vitest + MSW)
