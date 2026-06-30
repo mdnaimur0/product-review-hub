@@ -36,9 +36,11 @@ export function useProducts(filters?: ProductFilters): UseProductsReturn {
     Omit<PaginatedProductList, "items">
   >({ total: 0, page: 1, page_size: 12, total_pages: 0 });
   const [error, setError] = useState<string | null>(null);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [isLoading, startTransition] = useTransition();
 
   const fetchProducts = useCallback(() => {
+    setError(null);
     startTransition(async () => {
       try {
         const { data, error } = await productsListProducts({
@@ -64,6 +66,8 @@ export function useProducts(filters?: ProductFilters): UseProductsReturn {
         setError(
           err instanceof Error ? err.message : "Failed to load products",
         );
+      } finally {
+        setHasLoaded(true);
       }
     });
   }, [filters]);
@@ -84,7 +88,7 @@ export function useProducts(filters?: ProductFilters): UseProductsReturn {
   return {
     products,
     pagination,
-    isLoading,
+    isLoading: isLoading || !hasLoaded,
     error,
     refetch: debouncedFetchProducts,
   };

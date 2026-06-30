@@ -15,6 +15,7 @@ export function useAdminProducts() {
   const [isLoading, startTransition] = useTransition();
 
   const fetchProducts = useCallback(() => {
+    setError(null);
     startTransition(async () => {
       try {
         const { data, error } = await adminAdminListProducts();

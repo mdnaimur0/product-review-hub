@@ -70,9 +70,9 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {error && <ErrorAlert message={error} onRetry={refetch} />}
-
-          {isLoading || authLoading ? (
+          {error ? (
+            <ErrorAlert message={error} onRetry={refetch} />
+          ) : isLoading || authLoading ? (
             <div className="space-y-4">
               {Array.from({ length: 3 }).map((_, i) => (
                 <div key={i} className="double-bezel">

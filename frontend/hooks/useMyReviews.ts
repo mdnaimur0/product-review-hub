@@ -11,6 +11,7 @@ export function useMyReviews() {
   const [isLoading, startTransition] = useTransition();
 
   const fetchReviews = useCallback(() => {
+    setError(null);
     startTransition(async () => {
       try {
         const { data, error } = await reviewsGetMyReviews();

@@ -18,6 +18,7 @@ export function useProduct(productId: number): UseProductReturn {
   const [isLoading, startTransition] = useTransition();
 
   const fetchProduct = useCallback(() => {
+    setError(null);
     startTransition(async () => {
       try {
         setNotFound(false);

@@ -40,9 +40,9 @@ export default function ProductDetailPage({
       <Navbar />
       <main className="flex-1 pt-32 pb-24">
         <div className="mx-auto max-w-4xl px-6">
-          {error && <ErrorAlert message={error} onRetry={refetch} />}
-
-          {isLoading || !product ? (
+          {error ? (
+            <ErrorAlert message={error} onRetry={refetch} />
+          ) : isLoading || !product ? (
             <div className="space-y-8">
               <div className="grid gap-8 md:grid-cols-2">
                 <Skeleton className="aspect-square rounded-2xl" />

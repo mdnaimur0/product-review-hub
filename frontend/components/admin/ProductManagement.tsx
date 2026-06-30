@@ -124,29 +124,33 @@ export function ProductManagement({
         ) : (
           <div className="space-y-2">
             {products.map((product) => (
-              <Link
-                href={`/products/${product.id}`}
+              <div
                 key={product.id}
                 className="flex items-center justify-between rounded-lg border border-border p-3 transition-smooth duration-200 hover:bg-muted/50"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex items-center justify-center overflow-hidden rounded-lg bg-muted size-12 min-w-12">
                     {product.image_url ? (
-                      <Image
-                        src={product.image_url}
-                        alt={product.title}
-                        width={48}
-                        height={48}
-                        className="size-full object-cover"
-                      />
+                      <Link href={`/products/${product.id}`}>
+                        <Image
+                          src={product.image_url}
+                          alt={product.title}
+                          width={48}
+                          height={48}
+                          className="size-full object-cover"
+                        />
+                      </Link>
                     ) : (
                       <Package className="size-5 text-muted-foreground/40" />
                     )}
                   </div>
                   <div className="w-full">
-                    <p className="text-sm font-medium text-foreground">
+                    <Link
+                      href={`/products/${product.id}`}
+                      className="text-sm font-medium text-foreground"
+                    >
                       {product.title}
-                    </p>
+                    </Link>
                     {product.description && (
                       <p className="text-xs text-muted-foreground line-clamp-2 md:line-clamp-1">
                         {product.description}
@@ -170,7 +174,7 @@ export function ProductManagement({
                     <Trash2 className="size-3" />
                   )}
                 </Button>
-              </Link>
+              </div>
             ))}
           </div>
         )}

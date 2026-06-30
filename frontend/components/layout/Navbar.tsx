@@ -8,11 +8,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { logout } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Spinner } from "../ui/spinner";
 
 const links = [{ href: "/", label: "Home" }];
 
 export function Navbar() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -56,7 +57,7 @@ export function Navbar() {
                   {label}
                 </Link>
               ))}
-              {isAuthenticated && (
+              {!isLoading && isAuthenticated && (
                 <Link
                   href="/dashboard"
                   className={cn(
@@ -72,7 +73,7 @@ export function Navbar() {
             </div>
 
             <div className="hidden items-center gap-1 pl-2 md:flex">
-              {isAuthenticated ? (
+              {!isLoading && isAuthenticated ? (
                 <>
                   <span className="mr-1 text-sm text-muted-foreground whitespace-nowrap">
                     {user?.name}
@@ -88,6 +89,8 @@ export function Navbar() {
                     {isPending ? "Signing out..." : "Logout"}
                   </Button>
                 </>
+              ) : isLoading ? (
+                <Spinner />
               ) : (
                 <>
                   <Button
