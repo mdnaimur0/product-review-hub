@@ -4,19 +4,19 @@ A responsive product review platform built with Next.js 16 (App Router), TypeScr
 
 ## Tech Stack
 
-| Category | Technology |
-|---|---|
-| Framework | Next.js 16 (App Router) |
-| Language | TypeScript |
-| UI Components | shadcn/ui (radix-nova style) |
-| Styling | Tailwind CSS v4 |
-| Icons | Lucide React |
-| Validation | Zod v4 |
-| Toasts | Sonner |
-| API Client | @hey-api/openapi-ts (auto-generated) |
-| Testing | Vitest + Testing Library + MSW |
-| Linting | ESLint (flat config) + Prettier |
-| Package Manager | pnpm |
+| Category        | Technology                           |
+| --------------- | ------------------------------------ |
+| Framework       | Next.js 16 (App Router)              |
+| Language        | TypeScript                           |
+| UI Components   | shadcn/ui (radix-nova style)         |
+| Styling         | Tailwind CSS v4                      |
+| Icons           | Lucide React                         |
+| Validation      | Zod v4                               |
+| Toasts          | Sonner                               |
+| API Client      | @hey-api/openapi-ts (auto-generated) |
+| Testing         | Vitest + Testing Library + MSW       |
+| Linting         | ESLint (flat config) + Prettier      |
+| Package Manager | pnpm                                 |
 
 ## Prerequisites
 
@@ -65,15 +65,15 @@ This fetches the schema from the backend and outputs types and SDK functions to 
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `pnpm dev` | Start Next.js dev server |
-| `pnpm build` | Production build |
-| `pnpm start` | Start production server |
-| `pnpm lint` | Run ESLint |
-| `pnpm test` | Run tests once |
-| `pnpm test:watch` | Run tests in watch mode |
-| `pnpm format` | Format all files with Prettier |
+| Command                | Description                                     |
+| ---------------------- | ----------------------------------------------- |
+| `pnpm dev`             | Start Next.js dev server                        |
+| `pnpm build`           | Production build                                |
+| `pnpm start`           | Start production server                         |
+| `pnpm lint`            | Run ESLint                                      |
+| `pnpm test`            | Run tests once                                  |
+| `pnpm test:watch`      | Run tests in watch mode                         |
+| `pnpm format`          | Format all files with Prettier                  |
 | `pnpm generate-client` | Regenerate API client from backend OpenAPI spec |
 
 ## Project Structure
@@ -128,13 +128,13 @@ frontend/
 
 ### Pages
 
-| Route | Description |
-|---|---|
-| `/` | Product listing with search bar, min-rating filter, and pagination |
-| `/products/[id]` | Product detail, average rating, review list, and review form |
-| `/login` | Login with username + password |
-| `/register` | Registration with name, email, and password |
-| `/dashboard` | User's own reviews + admin panel (for superusers) |
+| Route            | Description                                                        |
+| ---------------- | ------------------------------------------------------------------ |
+| `/`              | Product listing with search bar, min-rating filter, and pagination |
+| `/products/[id]` | Product detail, average rating, review list, and review form       |
+| `/login`         | Login with username + password                                     |
+| `/register`      | Registration with name, email, and password                        |
+| `/dashboard`     | User's own reviews + admin panel (for superusers)                  |
 
 ### Core Functionality
 
@@ -172,14 +172,14 @@ The frontend consumes a FastAPI backend. The TypeScript API client is auto-gener
 
 ### Key endpoints
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `GET` | `/api/products/` | Public | List products (paginated, searchable) |
-| `GET` | `/api/products/{id}` | Public | Get product detail with reviews |
-| `POST` | `/api/reviews/` | JWT | Create a review |
-| `GET` | `/api/reviews/me` | JWT | Get current user's reviews |
-| `POST` | `/api/auth/register` | Public | Register a new user |
-| `POST` | `/api/auth/jwt/login` | Public | Login, returns JWT |
+| Method | Endpoint              | Auth   | Description                           |
+| ------ | --------------------- | ------ | ------------------------------------- |
+| `GET`  | `/api/products/`      | Public | List products (paginated, searchable) |
+| `GET`  | `/api/products/{id}`  | Public | Get product detail with reviews       |
+| `POST` | `/api/reviews/`       | JWT    | Create a review                       |
+| `GET`  | `/api/reviews/me`     | JWT    | Get current user's reviews            |
+| `POST` | `/api/auth/register`  | Public | Register a new user                   |
+| `POST` | `/api/auth/jwt/login` | Public | Login, returns JWT                    |
 
 Full API documentation is available at `http://localhost:8000/docs` when the backend is running.
 
