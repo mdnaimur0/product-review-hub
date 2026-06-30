@@ -23,15 +23,24 @@ export default function Page() {
   }, [state]);
 
   return (
-    <div className="flex min-h-dvh items-center justify-center px-6">
-      <div className="w-full max-w-md">
+    <div className="relative flex min-h-dvh items-center justify-center px-6 mesh-gradient">
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50 pointer-events-none" />
+      <div className="relative z-10 w-full max-w-md">
         <div className="double-bezel">
-          <form action={dispatch} className="double-bezel-inner bg-card p-8">
+          <form
+            action={dispatch}
+            className="double-bezel-inner bg-card p-8 md:p-10"
+          >
             <div className="mb-8 text-center">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-1 ring-1 ring-white/[0.06]">
+                <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground/60">
+                  Welcome Back
+                </span>
+              </div>
               <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">
-                Welcome Back
+                Sign In
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground/60">
                 Sign in to your account to continue
               </p>
             </div>
@@ -59,11 +68,11 @@ export default function Page() {
               <SubmitButton text="Sign In" />
               <FormError state={state} />
             </div>
-            <p className="mt-6 text-center text-sm text-muted-foreground">
+            <p className="mt-6 text-center text-sm text-muted-foreground/60">
               Don&apos;t have an account?{" "}
               <Link
                 href="/register"
-                className="font-medium text-primary hover:underline"
+                className="font-medium text-primary hover:brightness-110 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
               >
                 Sign up
               </Link>

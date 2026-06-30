@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle, RefreshCw } from "lucide-react";
+import { WarningCircle, ArrowClockwise } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 
 interface ErrorAlertProps {
@@ -10,12 +10,15 @@ interface ErrorAlertProps {
 
 export function ErrorAlert({ message, onRetry }: ErrorAlertProps) {
   return (
-    <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-6 text-center">
-      <AlertCircle className="mx-auto mb-3 size-8 text-destructive" />
-      <p className="mb-4 text-sm text-destructive">{message}</p>
+    <div className="rounded-2xl border border-red-500/10 bg-red-500/[0.03] p-8 text-center">
+      <WarningCircle
+        className="mx-auto mb-4 size-8 text-red-400/60"
+        weight="light"
+      />
+      <p className="mb-5 text-sm text-red-400/80">{message}</p>
       {onRetry && (
-        <Button variant="outline" size="sm" onClick={onRetry}>
-          <RefreshCw className="mr-2 size-3.5" />
+        <Button variant="outline" size="sm" onClick={onRetry} className="gap-2">
+          <ArrowClockwise className="size-3.5" weight="bold" />
           Try Again
         </Button>
       )}

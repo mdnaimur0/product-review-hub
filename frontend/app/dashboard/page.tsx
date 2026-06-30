@@ -14,7 +14,7 @@ import { ProductManagement } from "@/components/admin/ProductManagement";
 import { ReviewModeration } from "@/components/admin/ReviewModeration";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Shield, Package, MessageSquare } from "lucide-react";
+import { ShieldCheck, Package, ChatText } from "@phosphor-icons/react";
 
 export default function DashboardPage() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
@@ -46,22 +46,22 @@ export default function DashboardPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 pt-32 pb-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <div className="mb-6">
-            <div className="flex items-center gap-3">
-              <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+      <main className="flex-1 pt-40 pb-32">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="mb-10">
+            <div className="flex items-center gap-4 mb-3">
+              <h1 className="text-4xl font-bold tracking-tight text-foreground md:text-5xl">
                 Dashboard
               </h1>
               {isAdmin && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                  <Shield className="size-3" />
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.15em] text-primary">
+                  <ShieldCheck className="size-3" weight="fill" />
                   Admin
                 </span>
               )}
             </div>
             {user && (
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground/60">
                 Welcome back,{" "}
                 <span className="font-medium text-foreground">{user.name}</span>
                 {". "}
@@ -76,13 +76,13 @@ export default function DashboardPage() {
             <div className="space-y-4">
               {Array.from({ length: 3 }).map((_, i) => (
                 <div key={i} className="double-bezel">
-                  <div className="double-bezel-inner bg-card p-5 space-y-3">
+                  <div className="double-bezel-inner bg-card p-6 space-y-4">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Skeleton className="size-8 rounded-full" />
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="size-9 rounded-full" />
                         <Skeleton className="h-4 w-24" />
                       </div>
-                      <div className="flex gap-0.5">
+                      <div className="flex gap-1">
                         {Array.from({ length: 5 }).map((_, j) => (
                           <Skeleton key={j} className="size-3 rounded-full" />
                         ))}
@@ -104,50 +104,47 @@ export default function DashboardPage() {
           ) : (
             <div className="space-y-4">
               {reviews.map((review, i) => (
-                <div key={review.id} style={{ animationDelay: `${i * 60}ms` }}>
+                <div key={review.id} style={{ animationDelay: `${i * 80}ms` }}>
                   <ReviewCard review={review} />
                 </div>
               ))}
             </div>
           )}
 
-          {/* Admin Section */}
           {isAdmin && (
-            <div className="mt-16">
+            <div className="mt-20">
               <div className="mb-8 flex items-center gap-3">
                 <h2 className="text-2xl font-bold tracking-tight text-foreground">
                   Admin Panel
                 </h2>
-                <Shield className="size-5 text-primary" />
+                <div className="h-px flex-1 bg-white/[0.06]" />
               </div>
 
-              {/* Admin Tabs */}
               <div className="mb-6 flex gap-2">
                 <button
                   onClick={() => setActiveTab("products")}
-                  className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-smooth duration-200 ${
+                  className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                     activeTab === "products"
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      : "bg-white/[0.03] text-muted-foreground/60 hover:text-foreground hover:bg-white/[0.06] ring-1 ring-white/[0.06]"
                   }`}
                 >
-                  <Package className="size-4" />
+                  <Package className="size-4" weight="bold" />
                   Products
                 </button>
                 <button
                   onClick={() => setActiveTab("reviews")}
-                  className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-smooth duration-200 ${
+                  className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                     activeTab === "reviews"
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      : "bg-white/[0.03] text-muted-foreground/60 hover:text-foreground hover:bg-white/[0.06] ring-1 ring-white/[0.06]"
                   }`}
                 >
-                  <MessageSquare className="size-4" />
+                  <ChatText className="size-4" weight="bold" />
                   Reviews
                 </button>
               </div>
 
-              {/* Admin Content */}
               {activeTab === "products" ? (
                 <ProductManagement
                   products={products}

@@ -10,7 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Trash2, Loader2, Package, Plus } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
+import { Trash, Plus, Package } from "@phosphor-icons/react";
 import Image from "next/image";
 import type { ProductRead, ProductCreate } from "@/lib/api";
 import { toast } from "sonner";
@@ -55,25 +56,25 @@ export function ProductManagement({
 
   if (isLoading) {
     return (
-      <div className="double-bezel h-min">
+      <div className="double-bezel">
         <div className="double-bezel-inner bg-card p-6">
-          <h3 className="mb-4 text-lg font-semibold text-foreground">
+          <h3 className="mb-5 text-lg font-semibold text-foreground">
             Manage Products
           </h3>
           <div className="space-y-3">
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between rounded-lg border border-border p-3"
+                className="flex items-center justify-between rounded-xl border border-white/[0.06] p-3"
               >
                 <div className="flex items-center gap-3">
-                  <div className="size-10 animate-pulse rounded-lg bg-muted" />
+                  <div className="skeleton-shimmer size-10 rounded-lg" />
                   <div className="space-y-2">
-                    <div className="h-4 w-32 animate-pulse rounded bg-muted" />
-                    <div className="h-3 w-20 animate-pulse rounded bg-muted" />
+                    <div className="skeleton-shimmer h-4 w-32 rounded" />
+                    <div className="skeleton-shimmer h-3 w-20 rounded" />
                   </div>
                 </div>
-                <div className="size-7 animate-pulse rounded bg-muted" />
+                <div className="skeleton-shimmer size-7 rounded" />
               </div>
             ))}
           </div>
@@ -85,18 +86,18 @@ export function ProductManagement({
   return (
     <div className="double-bezel">
       <div className="double-bezel-inner bg-card p-6">
-        <div className="mb-4 flex items-center justify-between flex-wrap">
+        <div className="mb-5 flex items-center justify-between flex-wrap gap-3">
           <h3 className="text-lg font-semibold text-foreground">
             Manage Products
           </h3>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground/60">
               {products.length} products
             </span>
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
-                <Button size="default" className="gap-1.5">
-                  <Plus className="size-3.5" />
+                <Button size="default" className="gap-2">
+                  <Plus className="size-3.5" weight="bold" />
                   Add Product
                 </Button>
               </DialogTrigger>
@@ -117,19 +118,26 @@ export function ProductManagement({
         </div>
 
         {products.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <Package className="mb-3 size-10 text-muted-foreground/40" />
-            <p className="text-sm text-muted-foreground">No products found</p>
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-white/[0.03] ring-1 ring-white/[0.06]">
+              <Package
+                className="size-6 text-muted-foreground/40"
+                weight="light"
+              />
+            </div>
+            <p className="text-sm text-muted-foreground/60">
+              No products found
+            </p>
           </div>
         ) : (
           <div className="space-y-2">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex items-center justify-between rounded-lg border border-border p-3 transition-smooth duration-200 hover:bg-muted/50"
+                className="flex items-center justify-between rounded-xl border border-white/[0.06] p-3 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-white/[0.02]"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center overflow-hidden rounded-lg bg-muted size-12 min-w-12">
+                  <div className="flex items-center justify-center overflow-hidden rounded-xl bg-white/[0.03] size-12 min-w-12 ring-1 ring-white/[0.06]">
                     {product.image_url ? (
                       <Link href={`/products/${product.id}`}>
                         <Image
@@ -141,7 +149,10 @@ export function ProductManagement({
                         />
                       </Link>
                     ) : (
-                      <Package className="size-5 text-muted-foreground/40" />
+                      <Package
+                        className="size-5 text-muted-foreground/40"
+                        weight="light"
+                      />
                     )}
                   </div>
                   <div className="w-full">
@@ -152,11 +163,11 @@ export function ProductManagement({
                       {product.title}
                     </Link>
                     {product.description && (
-                      <p className="text-xs text-muted-foreground line-clamp-2 md:line-clamp-1">
+                      <p className="text-xs text-muted-foreground/60 line-clamp-2 md:line-clamp-1">
                         {product.description}
                       </p>
                     )}
-                    <p className="text-xs text-muted-foreground/60">
+                    <p className="text-xs text-muted-foreground/40">
                       Added {new Date(product.created_at).toLocaleDateString()}
                     </p>
                   </div>
@@ -169,9 +180,9 @@ export function ProductManagement({
                   aria-label={`Delete ${product.title}`}
                 >
                   {deletingId === product.id ? (
-                    <Loader2 className="size-3 animate-spin" />
+                    <Spinner />
                   ) : (
-                    <Trash2 className="size-3" />
+                    <Trash className="size-3" weight="bold" />
                   )}
                 </Button>
               </div>

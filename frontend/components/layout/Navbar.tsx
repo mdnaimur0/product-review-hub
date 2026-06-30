@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
-import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
+import { useState, useTransition, useEffect, useCallback } from "react";
+import { SignOut, User } from "@phosphor-icons/react";
 import { useAuth } from "@/hooks/useAuth";
 import { logout } from "@/app/(auth)/actions";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Spinner } from "../ui/spinner";
 
@@ -19,12 +18,23 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     startTransition(async () => {
       await logout();
       router.refresh();
     });
-  };
+  }, [router]);
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
 
   if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
     return null;
@@ -32,109 +42,134 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-6 left-1/2 z-50 -translate-x-1/2">
-        <div className="glass rounded-full border border-border/50 px-2 py-1.5 shadow-lg shadow-black/5">
-          <div className="flex items-center gap-1">
-            <Link
-              href="/"
-              className="mr-4 pl-4 text-sm font-semibold tracking-tight text-foreground"
-            >
-              ReviewHub
-            </Link>
+      <nav className="fixed top-5 left-1/2 z-40 -translate-x-1/2">
+        <div className="relative">
+          <div className="absolute inset-0 rounded-full bg-white/[0.02] ring-1 ring-white/[0.08]" />
+          <div className="relative glass-nav rounded-full px-1.5 py-1">
+            <div className="flex items-center gap-1">
+              <Link
+                href="/"
+                className="mr-3 pl-4 text-sm font-semibold tracking-tight text-foreground"
+              >
+                ReviewHub
+              </Link>
 
-            <div className="hidden items-center gap-1 md:flex">
-              {links.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className={cn(
-                    "rounded-full px-4 py-1.5 text-sm font-medium transition-smooth duration-300",
-                    pathname === href
-                      ? "bg-foreground/5 text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  {label}
-                </Link>
-              ))}
-              {!isLoading && isAuthenticated && (
-                <Link
-                  href="/dashboard"
-                  className={cn(
-                    "rounded-full px-4 py-1.5 text-sm font-medium transition-smooth duration-300",
-                    pathname === "/dashboard"
-                      ? "bg-foreground/5 text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  Dashboard
-                </Link>
-              )}
-            </div>
-
-            <div className="hidden items-center gap-1 pl-2 md:flex">
-              {!isLoading && isAuthenticated ? (
-                <>
-                  <span className="mr-1 text-sm text-muted-foreground whitespace-nowrap">
-                    {user?.name}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="gap-1.5 rounded-full text-muted-foreground hover:text-foreground"
-                    disabled={isPending}
-                    onClick={handleLogout}
+              <div className="hidden items-center gap-0.5 md:flex">
+                {links.map(({ href, label }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={cn(
+                      "rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                      pathname === href
+                        ? "bg-white/[0.08] text-foreground"
+                        : "text-muted-foreground/80 hover:text-foreground hover:bg-white/[0.04]",
+                    )}
                   >
-                    <LogOut className="size-3.5" />
-                    {isPending ? "Signing out..." : "Logout"}
-                  </Button>
-                </>
-              ) : isLoading ? (
-                <Spinner />
-              ) : (
-                <>
-                  <Button
-                    asChild
-                    variant="ghost"
-                    size="sm"
-                    className="rounded-full text-muted-foreground hover:text-foreground"
+                    {label}
+                  </Link>
+                ))}
+                {!isLoading && isAuthenticated && (
+                  <Link
+                    href="/dashboard"
+                    className={cn(
+                      "rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                      pathname === "/dashboard"
+                        ? "bg-white/[0.08] text-foreground"
+                        : "text-muted-foreground/80 hover:text-foreground hover:bg-white/[0.04]",
+                    )}
                   >
-                    <Link href="/login">Sign In</Link>
-                  </Button>
-                  <Button asChild size="sm" className="rounded-full">
-                    <Link href="/register">Sign Up</Link>
-                  </Button>
-                </>
-              )}
-            </div>
+                    Dashboard
+                  </Link>
+                )}
+              </div>
 
-            <button
-              className="ml-2 rounded-full p-2 text-muted-foreground hover:text-foreground md:hidden"
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? (
-                <X className="size-4" />
-              ) : (
-                <Menu className="size-4" />
-              )}
-            </button>
+              <div className="hidden items-center gap-1 pl-2 md:flex">
+                {!isLoading && isAuthenticated ? (
+                  <>
+                    <div className="flex items-center gap-2 mr-1">
+                      <div className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
+                        {user?.name?.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-sm text-muted-foreground/80 whitespace-nowrap">
+                        {user?.name}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      disabled={isPending}
+                      className="group relative flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-white/[0.04] active:scale-[0.97]"
+                    >
+                      <SignOut className="size-3.5" weight="duotone" />
+                      {isPending ? "Signing out..." : "Logout"}
+                    </button>
+                  </>
+                ) : isLoading ? (
+                  <div className="px-2">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-white/[0.04]"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="group relative inline-flex items-center justify-center rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:brightness-110 active:scale-[0.97]"
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
+              </div>
+
+              <button
+                className="relative z-50 ml-2 flex size-9 items-center justify-center rounded-full text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-white/[0.04] md:hidden"
+                onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              >
+                <div className="relative size-4">
+                  <span
+                    className={cn(
+                      "absolute left-0 h-[1.5px] w-full rounded-full bg-current transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                      mobileOpen
+                        ? "top-1/2 -translate-y-1/2 rotate-45"
+                        : "top-0",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "absolute left-0 top-1/2 h-[1.5px] w-full -translate-y-1/2 rounded-full bg-current transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                      mobileOpen && "opacity-0",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "absolute left-0 h-[1.5px] w-full rounded-full bg-current transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                      mobileOpen
+                        ? "top-1/2 -translate-y-1/2 -rotate-45"
+                        : "bottom-0",
+                    )}
+                  />
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 glass flex flex-col items-center justify-center gap-6 md:hidden animate-fade-in">
-          <button
-            className="absolute top-6 right-6 rounded-full p-2 text-muted-foreground hover:text-foreground"
-            onClick={() => setMobileOpen(false)}
-          >
-            <X className="size-5" />
-          </button>
-
+        <div className="fixed inset-0 z-30 flex flex-col items-center justify-center gap-8 bg-black/90 backdrop-blur-3xl md:hidden">
           <Link
             href="/"
-            className="text-3xl font-semibold text-foreground"
+            className="text-4xl font-semibold text-foreground transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] translate-y-0 opacity-100"
             onClick={() => setMobileOpen(false)}
+            style={{
+              animation: "slide-up 0.5s 0.1s var(--ease-out-expo) both",
+            }}
           >
             Home
           </Link>
@@ -143,41 +178,50 @@ export function Navbar() {
             <>
               <Link
                 href="/dashboard"
-                className="flex items-center gap-2 text-lg font-medium text-muted-foreground"
+                className="flex items-center gap-3 text-lg font-medium text-muted-foreground/80 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground"
                 onClick={() => setMobileOpen(false)}
+                style={{
+                  animation: "slide-up 0.5s 0.15s var(--ease-out-expo) both",
+                }}
               >
-                <LayoutDashboard className="size-5" />
+                <User className="size-5" weight="duotone" />
                 Dashboard
               </Link>
-              <Button
-                variant="ghost"
-                size="lg"
-                className="gap-2 text-lg text-muted-foreground"
-                disabled={isPending}
+              <button
                 onClick={handleLogout}
+                disabled={isPending}
+                className="flex items-center gap-3 text-lg font-medium text-muted-foreground/80 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground"
+                style={{
+                  animation: "slide-up 0.5s 0.2s var(--ease-out-expo) both",
+                }}
               >
-                <LogOut className="size-4" />
+                <SignOut className="size-5" weight="duotone" />
                 {isPending ? "Signing out..." : "Logout"}
-              </Button>
+              </button>
             </>
           ) : (
-            <div className="flex flex-col items-center gap-4">
-              <Button
-                asChild
-                variant="ghost"
-                size="lg"
-                className="text-lg text-muted-foreground"
+            <>
+              <Link
+                href="/login"
+                className="text-lg font-medium text-muted-foreground/80 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  animation: "slide-up 0.5s 0.15s var(--ease-out-expo) both",
+                }}
               >
-                <Link href="/login" onClick={() => setMobileOpen(false)}>
-                  Sign In
-                </Link>
-              </Button>
-              <Button asChild size="lg" className="text-lg">
-                <Link href="/register" onClick={() => setMobileOpen(false)}>
-                  Sign Up
-                </Link>
-              </Button>
-            </div>
+                Sign In
+              </Link>
+              <Link
+                href="/register"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-lg font-medium text-primary-foreground transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:brightness-110"
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  animation: "slide-up 0.5s 0.2s var(--ease-out-expo) both",
+                }}
+              >
+                Sign Up
+              </Link>
+            </>
           )}
         </div>
       )}

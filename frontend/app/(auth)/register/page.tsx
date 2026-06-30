@@ -11,15 +11,24 @@ import { useActionState } from "react";
 export default function Page() {
   const [state, dispatch] = useActionState(register, undefined);
   return (
-    <div className="flex min-h-dvh items-center justify-center px-6">
-      <div className="w-full max-w-md">
+    <div className="relative flex min-h-dvh items-center justify-center px-6 mesh-gradient">
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50 pointer-events-none" />
+      <div className="relative z-10 w-full max-w-md">
         <div className="double-bezel">
-          <form action={dispatch} className="double-bezel-inner bg-card p-8">
+          <form
+            action={dispatch}
+            className="double-bezel-inner bg-card p-8 md:p-10"
+          >
             <div className="mb-8 text-center">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-1 ring-1 ring-white/[0.06]">
+                <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground/60">
+                  Get Started
+                </span>
+              </div>
               <h1 className="mb-2 text-3xl font-bold tracking-tight text-foreground">
                 Create Account
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground/60">
                 Enter your details to get started
               </p>
             </div>
@@ -60,11 +69,11 @@ export default function Page() {
               <SubmitButton text="Create Account" />
               <FormError state={state} />
             </div>
-            <p className="mt-6 text-center text-sm text-muted-foreground">
+            <p className="mt-6 text-center text-sm text-muted-foreground/60">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-medium text-primary hover:underline"
+                className="font-medium text-primary hover:brightness-110 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
               >
                 Sign in
               </Link>

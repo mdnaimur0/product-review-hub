@@ -17,6 +17,40 @@ export function useProduct(productId: number): UseProductReturn {
   const [notFound, setNotFound] = useState(false);
   const [isLoading, startTransition] = useTransition();
 
+  useEffect(() => {
+    if (!productId) return;
+    let cancelled = false;
+    startTransition(async () => {
+      try {
+        setNotFound(false);
+        const { data, error, response } = await productsGetProduct({
+          path: { product_id: productId },
+        });
+        if (cancelled) return;
+        if (error) {
+          if (response?.status === 404) {
+            setNotFound(true);
+            setError(null);
+            return;
+          }
+          throw error;
+        }
+        setProduct(data ?? null);
+        setError(null);
+        setNotFound(false);
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err instanceof Error ? err.message : "Failed to load product",
+          );
+        }
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [productId]);
+
   const fetchProduct = useCallback(() => {
     setError(null);
     startTransition(async () => {
@@ -41,10 +75,6 @@ export function useProduct(productId: number): UseProductReturn {
       }
     });
   }, [productId]);
-
-  useEffect(() => {
-    if (productId) fetchProduct();
-  }, [productId, fetchProduct]);
 
   return { product, isLoading, error, notFound, refetch: fetchProduct };
 }

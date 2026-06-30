@@ -4,7 +4,7 @@ export function ProductCardSkeleton() {
   return (
     <div className="double-bezel">
       <div className="double-bezel-inner bg-card">
-        <Skeleton className="aspect-[4/3] rounded-none" />
+        <Skeleton className="aspect-4/3 rounded-none" />
         <div className="space-y-3 p-5">
           <Skeleton className="h-5 w-3/4" />
           <Skeleton className="h-4 w-full" />

@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { Star } from "@phosphor-icons/react";
 import type { ReviewRead } from "@/lib/api";
 
 interface ReviewCardProps {
@@ -7,11 +7,14 @@ interface ReviewCardProps {
 
 export function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <div className="double-bezel animate-fade-up">
-      <div className="double-bezel-inner bg-card p-5">
-        <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+    <div
+      className="double-bezel"
+      style={{ animation: "fade-up-blur 0.9s var(--ease-out-expo) both" }}
+    >
+      <div className="double-bezel-inner bg-card p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
               {review.user_name.charAt(0).toUpperCase()}
             </div>
             <span className="text-sm font-medium text-foreground">
@@ -25,18 +28,19 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 className={`size-3 ${
                   i < review.rating
                     ? "fill-amber-400 text-amber-400"
-                    : "fill-muted/30 text-muted/30"
+                    : "fill-white/[0.03] text-white/[0.08]"
                 }`}
+                weight={i < review.rating ? "fill" : "regular"}
               />
             ))}
           </div>
         </div>
         {review.comment && (
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground/80">
             {review.comment}
           </p>
         )}
-        <time className="mt-3 block text-xs text-muted-foreground/60">
+        <time className="mt-4 block text-xs text-muted-foreground/40">
           {new Date(review.created_at).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",

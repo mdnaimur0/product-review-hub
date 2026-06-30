@@ -17,9 +17,9 @@ export function ReviewList({ reviews }: ReviewListProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {reviews.map((review, i) => (
-        <div key={review.id} style={{ animationDelay: `${i * 60}ms` }}>
+        <div key={review.id} style={{ animationDelay: `${i * 80}ms` }}>
           <ReviewCard review={review} />
         </div>
       ))}

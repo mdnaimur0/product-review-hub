@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { reviewsCreateReview } from "@/lib/api";
 import { StarRating } from "./StarRating";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { PaperPlaneRight } from "@phosphor-icons/react";
 import { getErrorMessage } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -48,9 +48,9 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="mb-2 block text-sm font-medium text-foreground">
+        <label className="mb-2.5 block text-sm font-medium text-foreground">
           Your Rating
         </label>
         <StarRating value={rating} onChange={setRating} size="lg" />
@@ -58,7 +58,7 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
       <div>
         <label
           htmlFor="comment"
-          className="mb-2 block text-sm font-medium text-foreground"
+          className="mb-2.5 block text-sm font-medium text-foreground"
         >
           Your Review
         </label>
@@ -69,17 +69,19 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Share your experience with this product..."
-          className="w-full resize-none rounded-lg border border-input bg-input/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-smooth duration-200 focus:border-ring focus:ring-2 focus:ring-ring/30 focus:outline-none"
+          className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/40 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] focus:border-ring/50 focus:ring-3 focus:ring-ring/20 focus:outline-none"
         />
       </div>
-      <Button
-        type="submit"
-        disabled={isPending || rating === 0}
-        className="gap-2"
-      >
-        <Send className="size-3.5" />
-        {isPending ? "Submitting..." : "Submit Review"}
-      </Button>
+      <div className="flex items-center gap-2">
+        <Button
+          type="submit"
+          disabled={isPending || rating === 0}
+          className="gap-2"
+        >
+          <PaperPlaneRight className="size-3.5" weight="bold" />
+          {isPending ? "Submitting..." : "Submit Review"}
+        </Button>
+      </div>
     </form>
   );
 }

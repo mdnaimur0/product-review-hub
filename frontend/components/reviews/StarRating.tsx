@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Star } from "lucide-react";
+import { Star } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 interface StarRatingProps {
@@ -22,7 +22,7 @@ export function StarRating({
   const [hover, setHover] = useState(0);
 
   return (
-    <div className="flex gap-0.5" onMouseLeave={() => !readonly && setHover(0)}>
+    <div className="flex gap-1" onMouseLeave={() => !readonly && setHover(0)}>
       {Array.from({ length: 5 }).map((_, i) => {
         const rating = i + 1;
         const filled = rating <= (hover || value);
@@ -33,8 +33,10 @@ export function StarRating({
             type="button"
             disabled={readonly}
             className={cn(
-              "transition-smooth duration-200",
-              readonly ? "cursor-default" : "cursor-pointer hover:scale-110",
+              "transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+              readonly
+                ? "cursor-default"
+                : "cursor-pointer hover:scale-110 active:scale-95",
             )}
             onMouseEnter={() => !readonly && setHover(rating)}
             onClick={() => !readonly && onChange?.(rating)}
@@ -44,9 +46,9 @@ export function StarRating({
                 sizeMap[size],
                 filled
                   ? "fill-amber-400 text-amber-400"
-                  : "fill-muted/30 text-muted/30",
-                "stroke-1 stroke-amber-400",
+                  : "fill-white/[0.03] text-white/[0.08]",
               )}
+              weight={filled ? "fill" : "regular"}
             />
           </button>
         );

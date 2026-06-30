@@ -14,6 +14,28 @@ export function useAdminProducts() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, startTransition] = useTransition();
 
+  useEffect(() => {
+    let cancelled = false;
+    startTransition(async () => {
+      try {
+        const { data, error } = await adminAdminListProducts();
+        if (cancelled) return;
+        if (error) throw error;
+        setProducts(data ?? []);
+        setError(null);
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err instanceof Error ? err.message : "Failed to load products",
+          );
+        }
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const fetchProducts = useCallback(() => {
     setError(null);
     startTransition(async () => {
@@ -29,10 +51,6 @@ export function useAdminProducts() {
       }
     });
   }, []);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
 
   const createProduct = useCallback(
     async (productData: ProductCreate) => {

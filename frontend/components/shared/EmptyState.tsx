@@ -1,4 +1,4 @@
-import { PackageOpen } from "lucide-react";
+import { Package } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -16,10 +16,12 @@ export function EmptyState({
   actionHref,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-24 text-center">
-      <PackageOpen className="mb-4 size-12 text-muted-foreground/40" />
-      <h3 className="mb-1 text-lg font-medium text-foreground">{title}</h3>
-      <p className="mb-6 max-w-sm text-sm text-muted-foreground">
+    <div className="flex flex-col items-center justify-center py-32 text-center">
+      <div className="mb-6 flex size-16 items-center justify-center rounded-2xl bg-white/[0.03] ring-1 ring-white/[0.06]">
+        <Package className="size-7 text-muted-foreground/40" weight="light" />
+      </div>
+      <h3 className="mb-2 text-lg font-medium text-foreground">{title}</h3>
+      <p className="mb-8 max-w-sm text-sm text-muted-foreground/60">
         {description}
       </p>
       {actionLabel && actionHref && (
