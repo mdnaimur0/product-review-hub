@@ -101,5 +101,4 @@ export async function logout() {
   }
 
   cookieStore.delete("accessToken");
-  redirect(`/login`);
 }

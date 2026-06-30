@@ -222,7 +222,7 @@
 
 @layer utilities {
   .double-bezel {
-    @apply ring-1 ring-[var(--ring-subtle)] rounded-[calc(var(--radius-4xl)+0.25rem)] p-[3px];
+    @apply ring-1 ring-(--ring-subtle) rounded-[calc(var(--radius-4xl)+0.25rem)] p-0.75;
   }
   .double-bezel-inner {
     @apply rounded-[calc(var(--radius-4xl)-1px)] overflow-hidden;
