@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition, useEffect, useCallback } from "react";
-import { SignOut, User } from "@phosphor-icons/react";
+import { SignOut, User, Sun, Moon } from "@phosphor-icons/react";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/hooks/useTheme";
 import { logout } from "@/app/(auth)/actions";
 import { cn } from "@/lib/utils";
 import { Spinner } from "../ui/spinner";
@@ -13,6 +14,7 @@ const links = [{ href: "/", label: "Home" }];
 
 export function Navbar() {
   const { user, isAuthenticated, isLoading } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -44,7 +46,7 @@ export function Navbar() {
     <>
       <nav className="fixed top-5 left-1/2 z-40 -translate-x-1/2">
         <div className="relative">
-          <div className="absolute inset-0 rounded-full bg-white/[0.02] ring-1 ring-white/[0.08]" />
+          <div className="absolute inset-0 rounded-full bg-black/5 dark:bg-white/[0.02] ring-1 ring-black/10 dark:ring-white/[0.08]" />
           <div className="relative glass-nav rounded-full px-1.5 py-1">
             <div className="flex items-center gap-1">
               <Link
@@ -62,8 +64,8 @@ export function Navbar() {
                     className={cn(
                       "rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
                       pathname === href
-                        ? "bg-white/[0.08] text-foreground"
-                        : "text-muted-foreground/80 hover:text-foreground hover:bg-white/[0.04]",
+                        ? "bg-black/5 dark:bg-white/[0.08] text-foreground"
+                        : "text-muted-foreground/80 hover:text-foreground hover:bg-black/[0.03] dark:hover:bg-white/[0.04]",
                     )}
                   >
                     {label}
@@ -75,8 +77,8 @@ export function Navbar() {
                     className={cn(
                       "rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
                       pathname === "/dashboard"
-                        ? "bg-white/[0.08] text-foreground"
-                        : "text-muted-foreground/80 hover:text-foreground hover:bg-white/[0.04]",
+                        ? "bg-black/5 dark:bg-white/[0.08] text-foreground"
+                        : "text-muted-foreground/80 hover:text-foreground hover:bg-black/[0.03] dark:hover:bg-white/[0.04]",
                     )}
                   >
                     Dashboard
@@ -98,7 +100,7 @@ export function Navbar() {
                     <button
                       onClick={handleLogout}
                       disabled={isPending}
-                      className="group relative flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-white/[0.04] active:scale-[0.97]"
+                      className="group relative flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-black/[0.03] dark:hover:bg-white/[0.04] active:scale-[0.97]"
                     >
                       <SignOut className="size-3.5" weight="duotone" />
                       {isPending ? "Signing out..." : "Logout"}
@@ -112,7 +114,7 @@ export function Navbar() {
                   <>
                     <Link
                       href="/login"
-                      className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-white/[0.04]"
+                      className="rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-black/[0.03] dark:hover:bg-white/[0.04]"
                     >
                       Sign In
                     </Link>
@@ -127,7 +129,19 @@ export function Navbar() {
               </div>
 
               <button
-                className="relative z-50 ml-2 flex size-9 items-center justify-center rounded-full text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-white/[0.04] md:hidden"
+                onClick={toggleTheme}
+                className="hidden md:flex size-9 items-center justify-center rounded-full text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-black/[0.03] dark:hover:bg-white/[0.04] active:scale-[0.97]"
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              >
+                {theme === "dark" ? (
+                  <Sun className="size-4" weight="duotone" />
+                ) : (
+                  <Moon className="size-4" weight="duotone" />
+                )}
+              </button>
+
+              <button
+                className="relative z-50 ml-2 flex size-9 items-center justify-center rounded-full text-muted-foreground/80 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-black/[0.03] dark:hover:bg-white/[0.04] md:hidden"
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}
               >
@@ -162,7 +176,7 @@ export function Navbar() {
       </nav>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-30 flex flex-col items-center justify-center gap-8 bg-black/90 backdrop-blur-3xl md:hidden">
+        <div className="fixed inset-0 z-30 flex flex-col items-center justify-center gap-8 bg-white/90 backdrop-blur-3xl dark:bg-black/90 md:hidden">
           <Link
             href="/"
             className="text-4xl font-semibold text-foreground transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] translate-y-0 opacity-100"
@@ -223,6 +237,21 @@ export function Navbar() {
               </Link>
             </>
           )}
+
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-3 text-lg font-medium text-muted-foreground/80 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground"
+            style={{
+              animation: "slide-up 0.5s 0.25s var(--ease-out-expo) both",
+            }}
+          >
+            {theme === "dark" ? (
+              <Sun className="size-5" weight="duotone" />
+            ) : (
+              <Moon className="size-5" weight="duotone" />
+            )}
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </button>
         </div>
       )}
     </>

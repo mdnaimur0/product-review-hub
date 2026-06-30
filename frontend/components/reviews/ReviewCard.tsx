@@ -1,4 +1,4 @@
-import { Star } from "@phosphor-icons/react";
+import { StarIcon as Star } from "@phosphor-icons/react";
 import type { ReviewRead } from "@/lib/api";
 
 interface ReviewCardProps {
@@ -25,10 +25,10 @@ export function ReviewCard({ review }: ReviewCardProps) {
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
                 key={i}
-                className={`size-3 ${
+                className={`size-3 stroke-2 stroke-foreground ${
                   i < review.rating
                     ? "fill-amber-400 text-amber-400"
-                    : "fill-white/[0.03] text-white/[0.08]"
+                    : "fill-(--bg-subtle) text-(--border-subtle)"
                 }`}
                 weight={i < review.rating ? "fill" : "regular"}
               />

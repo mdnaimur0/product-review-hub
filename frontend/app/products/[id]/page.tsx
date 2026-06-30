@@ -12,7 +12,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Star } from "@phosphor-icons/react";
+import { StarIcon as Star } from "@phosphor-icons/react";
 
 export default function ProductDetailPage({
   params,
@@ -71,19 +71,19 @@ export default function ProductDetailPage({
             <>
               <div className="mb-20 grid gap-12 md:grid-cols-2">
                 <div className="double-bezel">
-                  <div className="double-bezel-inner relative aspect-square overflow-hidden bg-white/[0.03]">
+                  <div className="double-bezel-inner relative aspect-square overflow-hidden bg-(--bg-subtle)">
                     {product.image_url ? (
                       <Image
                         src={product.image_url}
                         alt={product.title}
                         fill
-                        className="object-cover transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"
+                        className="object-cover transition-all duration-700 ease-out-expo"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     ) : (
                       <div className="flex size-full items-center justify-center">
                         <Star
-                          className="size-20 text-white/[0.06]"
+                          className="size-20 text-(--bg-muted)"
                           weight="light"
                         />
                       </div>
@@ -92,7 +92,7 @@ export default function ProductDetailPage({
                 </div>
 
                 <div className="flex flex-col justify-center">
-                  <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-1 ring-1 ring-white/[0.06] w-fit">
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-(--bg-muted) px-3 py-1 ring-1 ring-(--ring-subtle) w-fit">
                     <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground/60">
                       Product Detail
                     </span>
@@ -131,7 +131,7 @@ export default function ProductDetailPage({
                   <h2 className="text-2xl font-semibold tracking-tight text-foreground">
                     Reviews
                   </h2>
-                  <div className="h-px flex-1 bg-white/[0.06]" />
+                  <div className="h-px flex-1 bg-(--bg-active)" />
                 </div>
                 {isAuthenticated && (
                   <div className="double-bezel mb-10">

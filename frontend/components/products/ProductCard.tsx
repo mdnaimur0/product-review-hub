@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { Star } from "@phosphor-icons/react";
 import type { ProductListItem } from "@/lib/api";
+import { StarIcon } from "@phosphor-icons/react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: ProductListItem;
@@ -16,20 +16,23 @@ export function ProductCard({ product }: ProductCardProps) {
       className="group block"
       style={{ animation: "fade-up-blur 0.9s var(--ease-out-expo) both" }}
     >
-      <div className="double-bezel transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.02] group-hover:shadow-2xl group-hover:shadow-primary/5">
+      <div className="double-bezel transition-all duration-700 ease-out-expo group-hover:scale-[1.02] group-hover:shadow-2xl group-hover:shadow-primary/5">
         <div className="double-bezel-inner bg-card">
-          <div className="relative aspect-[4/3] overflow-hidden bg-white/[0.03]">
+          <div className="relative aspect-4/3 overflow-hidden bg-(--bg-subtle)">
             {product.image_url ? (
               <Image
                 src={product.image_url}
                 alt={product.title}
                 fill
-                className="object-cover transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105"
+                className="object-cover transition-all duration-700 ease-out-expo group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             ) : (
               <div className="flex size-full items-center justify-center">
-                <Star className="size-10 text-white/[0.06]" weight="light" />
+                <StarIcon
+                  className="size-10 text-(--bg-muted)"
+                  weight="light"
+                />
               </div>
             )}
           </div>
@@ -63,12 +66,12 @@ function RatingStars({ rating }: { rating: number }) {
   return (
     <div className="flex gap-0.5">
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star
+        <StarIcon
           key={i}
-          className={`size-3.5 ${
+          className={`size-3.5 stroke-2 stroke-foreground ${
             i < Math.round(rating)
               ? "fill-amber-400 text-amber-400"
-              : "fill-white/[0.03] text-white/[0.08]"
+              : "fill-(--bg-subtle) text-(--border-subtle)"
           }`}
           weight={i < Math.round(rating) ? "fill" : "regular"}
         />

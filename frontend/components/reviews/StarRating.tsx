@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Star } from "@phosphor-icons/react";
+import { StarIcon as Star } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 interface StarRatingProps {
@@ -33,7 +33,7 @@ export function StarRating({
             type="button"
             disabled={readonly}
             className={cn(
-              "transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+              "transition-all duration-500 ease-out-expo",
               readonly
                 ? "cursor-default"
                 : "cursor-pointer hover:scale-110 active:scale-95",
@@ -46,7 +46,8 @@ export function StarRating({
                 sizeMap[size],
                 filled
                   ? "fill-amber-400 text-amber-400"
-                  : "fill-white/[0.03] text-white/[0.08]",
+                  : "fill-(--bg-subtle) text-(--border-subtle)",
+                "stroke-2 stroke-foreground",
               )}
               weight={filled ? "fill" : "regular"}
             />

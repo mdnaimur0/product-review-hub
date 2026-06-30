@@ -12,7 +12,7 @@ export default function NotFound() {
             Error 404
           </span>
         </div>
-        <h1 className="mb-4 text-8xl font-bold tracking-tighter text-foreground/5 md:text-9xl">
+        <h1 className="mb-4 text-8xl font-bold tracking-tighter text-foreground md:text-9xl">
           404
         </h1>
         <h2 className="mb-4 text-2xl font-semibold text-foreground">

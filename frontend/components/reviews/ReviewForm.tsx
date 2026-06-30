@@ -69,7 +69,7 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Share your experience with this product..."
-          className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/40 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] focus:border-ring/50 focus:ring-3 focus:ring-ring/20 focus:outline-none"
+          className="w-full resize-none rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/40 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] focus:border-ring/50 focus:ring-3 focus:ring-ring/20 focus:outline-none"
         />
       </div>
       <div className="flex items-center gap-2">

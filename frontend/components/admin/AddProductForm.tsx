@@ -70,7 +70,7 @@ export function AddProductForm({ onSubmit, onSuccess }: AddProductFormProps) {
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Enter product description"
           disabled={isPending}
-          className="w-full resize-none rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/40 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] focus:border-ring/50 focus:ring-3 focus:ring-ring/20 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+          className="w-full resize-none rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-subtle)] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/40 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] focus:border-ring/50 focus:ring-3 focus:ring-ring/20 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
         />
       </div>
 

@@ -117,16 +117,16 @@ export default function DashboardPage() {
                 <h2 className="text-2xl font-bold tracking-tight text-foreground">
                   Admin Panel
                 </h2>
-                <div className="h-px flex-1 bg-white/[0.06]" />
+                <div className="h-px flex-1 bg-(--bg-active)" />
               </div>
 
               <div className="mb-6 flex gap-2">
                 <button
                   onClick={() => setActiveTab("products")}
-                  className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+                  className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-500 ease-out-expo ${
                     activeTab === "products"
                       ? "bg-primary text-primary-foreground"
-                      : "bg-white/[0.03] text-muted-foreground/60 hover:text-foreground hover:bg-white/[0.06] ring-1 ring-white/[0.06]"
+                      : "bg-(--bg-subtle) text-muted-foreground/60 hover:text-foreground hover:bg-(--bg-active) ring-1 ring-(--ring-subtle)"
                   }`}
                 >
                   <Package className="size-4" weight="bold" />
@@ -134,10 +134,10 @@ export default function DashboardPage() {
                 </button>
                 <button
                   onClick={() => setActiveTab("reviews")}
-                  className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+                  className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-500 ease-out-expo ${
                     activeTab === "reviews"
                       ? "bg-primary text-primary-foreground"
-                      : "bg-white/[0.03] text-muted-foreground/60 hover:text-foreground hover:bg-white/[0.06] ring-1 ring-white/[0.06]"
+                      : "bg-(--bg-subtle) text-muted-foreground/60 hover:text-foreground hover:bg-(--bg-active) ring-1 ring-(--ring-subtle)"
                   }`}
                 >
                   <ChatText className="size-4" weight="bold" />

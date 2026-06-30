@@ -17,7 +17,7 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-32 text-center">
-      <div className="mb-6 flex size-16 items-center justify-center rounded-2xl bg-white/[0.03] ring-1 ring-white/[0.06]">
+      <div className="mb-6 flex size-16 items-center justify-center rounded-2xl bg-[var(--bg-subtle)] ring-1 ring-[var(--ring-subtle)]">
         <Package className="size-7 text-muted-foreground/40" weight="light" />
       </div>
       <h3 className="mb-2 text-lg font-medium text-foreground">{title}</h3>

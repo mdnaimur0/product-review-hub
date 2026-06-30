@@ -93,7 +93,7 @@ export default function Home() {
                       value={minRating}
                       onValueChange={handleRatingChange}
                     >
-                      <SelectTrigger className="w-full sm:w-36 border-0 bg-white/3">
+                      <SelectTrigger className="w-full sm:w-36 border-0 bg-black/3 dark:bg-white/3 text-foreground/60!">
                         <SelectValue placeholder="All ratings" />
                       </SelectTrigger>
                       <SelectContent>

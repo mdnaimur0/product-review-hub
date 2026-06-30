@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
-import { Trash, Plus, Package } from "@phosphor-icons/react";
+import { TrashIcon, PlusIcon, PackageIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import type { ProductRead, ProductCreate } from "@/lib/api";
 import { toast } from "sonner";
@@ -65,7 +65,7 @@ export function ProductManagement({
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between rounded-xl border border-white/[0.06] p-3"
+                className="flex items-center justify-between rounded-xl border border-(--border-subtle) p-3"
               >
                 <div className="flex items-center gap-3">
                   <div className="skeleton-shimmer size-10 rounded-lg" />
@@ -97,7 +97,7 @@ export function ProductManagement({
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
                 <Button size="default" className="gap-2">
-                  <Plus className="size-3.5" weight="bold" />
+                  <PlusIcon className="size-3.5" weight="bold" />
                   Add Product
                 </Button>
               </DialogTrigger>
@@ -119,8 +119,8 @@ export function ProductManagement({
 
         {products.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-white/[0.03] ring-1 ring-white/[0.06]">
-              <Package
+            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-(--bg-subtle) ring-1 ring-(--ring-subtle)">
+              <PackageIcon
                 className="size-6 text-muted-foreground/40"
                 weight="light"
               />
@@ -134,10 +134,10 @@ export function ProductManagement({
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex items-center justify-between rounded-xl border border-white/[0.06] p-3 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-white/[0.02]"
+                className="flex items-center justify-between rounded-xl border border-(--border-subtle) p-3 transition-all duration-500 ease-out-expo hover:bg-(--bg-subtle)"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center overflow-hidden rounded-xl bg-white/[0.03] size-12 min-w-12 ring-1 ring-white/[0.06]">
+                  <div className="flex items-center justify-center overflow-hidden rounded-xl bg-(--bg-subtle) size-12 min-w-12 ring-1 ring-(--ring-subtle)">
                     {product.image_url ? (
                       <Link href={`/products/${product.id}`}>
                         <Image
@@ -149,7 +149,7 @@ export function ProductManagement({
                         />
                       </Link>
                     ) : (
-                      <Package
+                      <PackageIcon
                         className="size-5 text-muted-foreground/40"
                         weight="light"
                       />
@@ -182,7 +182,7 @@ export function ProductManagement({
                   {deletingId === product.id ? (
                     <Spinner />
                   ) : (
-                    <Trash className="size-3" weight="bold" />
+                    <TrashIcon className="size-3" weight="bold" />
                   )}
                 </Button>
               </div>

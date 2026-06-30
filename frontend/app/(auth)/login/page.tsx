@@ -32,7 +32,7 @@ export default function Page() {
             className="double-bezel-inner bg-card p-8 md:p-10"
           >
             <div className="mb-8 text-center">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-1 ring-1 ring-white/[0.06]">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[var(--bg-muted)] px-3 py-1 ring-1 ring-[var(--ring-subtle)]">
                 <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground/60">
                   Welcome Back
                 </span>

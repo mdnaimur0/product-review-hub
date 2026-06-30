@@ -151,6 +151,13 @@
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(0.975 0.003 90);
   --foreground: oklch(0.145 0 0);
+  --bg-subtle: oklch(0 0 0 / 0.04);
+  --bg-muted: oklch(0 0 0 / 0.06);
+  --bg-active: oklch(0 0 0 / 0.1);
+  --border-subtle: oklch(0 0 0 / 0.08);
+  --ring-subtle: oklch(0 0 0 / 0.06);
+  --skeleton-base: oklch(0.9 0 0);
+  --skeleton-shimmer: oklch(0.96 0 0);
 }
 
 .dark {
@@ -185,6 +192,13 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 8%);
   --sidebar-ring: oklch(0.556 0 0);
+  --bg-subtle: oklch(1 0 0 / 0.04);
+  --bg-muted: oklch(1 0 0 / 0.06);
+  --bg-active: oklch(1 0 0 / 0.1);
+  --border-subtle: oklch(1 0 0 / 0.08);
+  --ring-subtle: oklch(1 0 0 / 0.06);
+  --skeleton-base: oklch(0.18 0 0);
+  --skeleton-shimmer: oklch(0.26 0 0);
 }
 
 @layer base {
@@ -208,7 +222,7 @@
 
 @layer utilities {
   .double-bezel {
-    @apply ring-1 ring-white/[0.06] rounded-[calc(var(--radius-4xl)+0.25rem)] p-[3px];
+    @apply ring-1 ring-[var(--ring-subtle)] rounded-[calc(var(--radius-4xl)+0.25rem)] p-[3px];
   }
   .double-bezel-inner {
     @apply rounded-[calc(var(--radius-4xl)-1px)] overflow-hidden;
@@ -273,17 +287,17 @@
     text-wrap: balance;
   }
   .hairline {
-    @apply border border-white/[0.06];
+    @apply border border-border;
   }
   .hairline-bottom {
-    @apply border-b border-white/[0.06];
+    @apply border-b border-border;
   }
   .skeleton-shimmer {
     background: linear-gradient(
       90deg,
-      color-mix(in oklch, var(--card) 100%, transparent) 25%,
-      color-mix(in oklch, var(--card) 60%, transparent) 50%,
-      color-mix(in oklch, var(--card) 100%, transparent) 75%
+      var(--skeleton-base) 25%,
+      var(--skeleton-shimmer) 50%,
+      var(--skeleton-base) 75%
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s ease-in-out infinite;

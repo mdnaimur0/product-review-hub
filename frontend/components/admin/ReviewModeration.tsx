@@ -49,7 +49,7 @@ export function ReviewModeration({
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-xl border border-white/[0.06] p-4"
+                className="rounded-xl border border-[var(--border-subtle)] p-4"
               >
                 <div className="mb-3 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -82,7 +82,7 @@ export function ReviewModeration({
 
         {reviews.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-white/[0.03] ring-1 ring-white/[0.06]">
+            <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-[var(--bg-subtle)] ring-1 ring-[var(--ring-subtle)]">
               <ChatText
                 className="size-6 text-muted-foreground/40"
                 weight="light"
@@ -95,7 +95,7 @@ export function ReviewModeration({
             {reviews.map((review) => (
               <div
                 key={review.id}
-                className="rounded-xl border border-white/[0.06] p-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-white/[0.02]"
+                className="rounded-xl border border-[var(--border-subtle)] p-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[var(--bg-subtle)]"
               >
                 <div className="mb-3 flex items-center justify-between">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -120,7 +120,7 @@ export function ReviewModeration({
                           className={`size-3 ${
                             i < review.rating
                               ? "fill-amber-400 text-amber-400"
-                              : "fill-white/[0.03] text-white/[0.08]"
+                              : "fill-[var(--bg-subtle)] text-[var(--border-subtle)]"
                           }`}
                           weight={i < review.rating ? "fill" : "regular"}
                         />

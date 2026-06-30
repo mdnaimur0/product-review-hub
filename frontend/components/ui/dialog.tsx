@@ -4,7 +4,7 @@ import * as React from "react";
 import { Dialog as DialogPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
-import { X } from "@phosphor-icons/react";
+import { XIcon } from "@phosphor-icons/react";
 
 function Dialog({
   ...props
@@ -38,7 +38,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-black/70 backdrop-blur-2xl data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
+        "fixed inset-0 z-50 bg-white/20 dark:bg-black/50 backdrop-blur-2xl",
         className,
       )}
       {...props}
@@ -57,14 +57,14 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-[calc(var(--radius-4xl)+0.25rem)] bg-card p-6 shadow-2xl ring-1 ring-white/[0.08] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-open:slide-in-from-left-1/2 data-open:slide-in-from-top-[48%] data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-closed:slide-out-to-left-1/2 data-closed:slide-out-to-top-[48%] sm:max-w-md",
+          "fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg duration-75 -translate-x-1/2 -translate-y-1/2 gap-4 rounded-[calc(var(--radius-4xl)+0.25rem)] bg-card p-6 shadow-2xl ring-1 ring-white/8 sm:max-w-md",
           className,
         )}
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-1.5 text-muted-foreground/60 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-foreground hover:bg-white/[0.04] focus:outline-none focus-visible:ring-3 focus-visible:ring-ring/20">
-          <X className="size-4" weight="bold" />
+        <DialogPrimitive.Close className="absolute right-4 top-4 duration-75 rounded-full p-1.5 text-muted-foreground/60 hover:text-foreground hover:bg-white/4 focus:outline-none focus-visible:ring-3 focus-visible:ring-ring/20">
+          <XIcon className="size-4" weight="bold" />
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPortal>
