@@ -154,7 +154,7 @@ All endpoints are prefixed with `/api`. Interactive docs at `/docs`.
 ### 1. Clone
 
 ```bash
-git clone https://github.com/your-username/product-review-hub.git
+git clone https://github.com/mdnaimur0/product-review-hub.git
 cd product-review-hub
 ```
 
