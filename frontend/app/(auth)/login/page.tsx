@@ -6,10 +6,22 @@ import { SubmitButton } from "@/components/SubmitButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 export default function Page() {
   const [state, dispatch] = useActionState(login, undefined);
+
+  useEffect(() => {
+    if (
+      state &&
+      typeof state === "object" &&
+      "success" in state &&
+      state.success === true
+    ) {
+      window.location.href = "/dashboard";
+    }
+  }, [state]);
+
   return (
     <div className="flex min-h-dvh items-center justify-center px-6">
       <div className="w-full max-w-md">

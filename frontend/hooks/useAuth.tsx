@@ -5,10 +5,11 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
-  useTransition,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 import { usersUsersCurrentUser, type UserRead } from "@/lib/api";
 
 interface AuthContextValue {
@@ -22,33 +23,42 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserRead | null>(null);
-  const [, startTransition] = useTransition();
-  const [fetched, setFetched] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const pathname = usePathname();
+  const fetchIdRef = useRef(0);
 
-  const fetchUser = useCallback(() => {
-    startTransition(async () => {
-      try {
-        const { data } = await usersUsersCurrentUser();
-        setUser(data ?? null);
-      } catch {
-        setUser(null);
-      } finally {
-        setFetched(true);
-      }
-    });
+  const fetchUser = useCallback(async () => {
+    const id = ++fetchIdRef.current;
+    try {
+      const { data } = await usersUsersCurrentUser();
+      if (id !== fetchIdRef.current) return;
+      setUser(data ?? null);
+    } catch {
+      if (id !== fetchIdRef.current) return;
+      setUser(null);
+    } finally {
+      if (id !== fetchIdRef.current) return;
+      setIsLoading(false);
+    }
   }, []);
 
-  useEffect(() => {
-    fetchUser();
+  const refetch = useCallback(async () => {
+    setIsLoading(true);
+    await fetchUser();
   }, [fetchUser]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchUser();
+  }, [fetchUser, pathname]);
 
   return (
     <AuthContext.Provider
       value={{
         user,
         isAuthenticated: !!user,
-        isLoading: !fetched,
-        refetch: fetchUser,
+        isLoading,
+        refetch,
       }}
     >
       {children}

@@ -4,6 +4,7 @@ interface ErrorState {
   };
   server_validation_error?: string;
   server_error?: string;
+  success?: boolean;
 }
 
 interface FormErrorProps {
